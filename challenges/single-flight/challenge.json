@@ -1,0 +1,6 @@
+{
+  "id": "single-flight",
+  "title": "The double fetch",
+  "description": "Two callers, one cache miss, two expensive requests. Share pending work without caching a rejected promise forever.",
+  "contract": "Concurrent callers for the same key must share a single in-flight load. Cache successful values (including undefined); evict rejected loads so the next call retries. Synchronous throws from load must become promise rejections and allow retry. Different keys remain independent. Export createCache(load) returning async get(key)."
+}

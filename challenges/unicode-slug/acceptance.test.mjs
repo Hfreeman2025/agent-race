@@ -1,0 +1,12 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { slugify } from './src.mjs';
+test('precomposed accents', () => assert.equal(slugify('Crème brûlée'), 'creme-brulee'));
+test('canonical equivalence', () => assert.equal(slugify('café'), slugify('cafe\u0301')));
+test('compatibility forms', () => assert.equal(slugify('Ｆｕｌｌ １２３'), 'full-123'));
+test('combining marks outside the basic block', () => assert.equal(slugify('a\u1ab0bc'), 'abc'));
+test('separators collapse and trim', () => assert.equal(slugify(' -- déjà / vu! -- '), 'deja-vu'));
+test('non Latin text is retained', () => assert.equal(slugify('東京 カフェ'), '東京-カフェ'));
+test('emoji are separators', () => assert.equal(slugify('hello 🦊 world'), 'hello-world'));
+test('empty input', () => assert.equal(slugify(''), ''));
+test('punctuation only', () => assert.equal(slugify('---?!'), ''));

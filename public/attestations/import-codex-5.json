@@ -1,0 +1,26 @@
+{
+  "id": "codex-5",
+  "argv": null,
+  "cwd": null,
+  "shell": null,
+  "exitCode": 0,
+  "signal": null,
+  "startedAt": null,
+  "endedAt": null,
+  "stdout": {
+    "sha256": null,
+    "bytes": null
+  },
+  "stderr": {
+    "sha256": null,
+    "bytes": null
+  },
+  "recordedEvent": {
+    "displayCommand": "/bin/zsh -lc ./verify",
+    "cwdMarker": "<repo>",
+    "recordedAt": "2026-11-01T12:50:14.922Z",
+    "at": 45338,
+    "atUnit": "ms",
+    "clock": "stream-arrival"
+  }
+}

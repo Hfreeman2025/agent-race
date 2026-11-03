@@ -1,0 +1,77 @@
+{
+  "source": "derived-from-real-recordings",
+  "recordings": [
+    {
+      "id": "single-flight-2026-11-01T12-50-14-922Z",
+      "file": "single-flight-2026-11-01T12-50-14-922Z.json",
+      "title": "The double fetch",
+      "challenge": "single-flight",
+      "recordedAt": "2026-11-01T12:50:14.922Z",
+      "current": true,
+      "fair": true,
+      "results": [
+        {
+          "agent": "claude",
+          "accepted": true,
+          "agentExit": 0,
+          "verifiedAt": 41466
+        },
+        {
+          "agent": "codex",
+          "accepted": true,
+          "agentExit": 0,
+          "verifiedAt": 77793
+        }
+      ]
+    },
+    {
+      "id": "unicode-slug-2026-11-01T11-49-17-501Z",
+      "file": "unicode-slug-2026-11-01T11-49-17-501Z.json",
+      "title": "Lost in translation",
+      "challenge": "unicode-slug",
+      "recordedAt": "2026-11-01T11:49:17.501Z",
+      "current": false,
+      "fair": false,
+      "results": [
+        {
+          "agent": "claude",
+          "accepted": false,
+          "agentExit": 1,
+          "verifiedAt": null,
+          "error": "Agent exited 1: "
+        },
+        {
+          "agent": "codex",
+          "accepted": false,
+          "agentExit": null,
+          "verifiedAt": null,
+          "error": "Agent exited null: "
+        }
+      ]
+    },
+    {
+      "id": "unicode-slug-2026-11-01T11-50-08-213Z",
+      "file": "unicode-slug-2026-11-01T11-50-08-213Z.json",
+      "title": "Lost in translation",
+      "challenge": "unicode-slug",
+      "recordedAt": "2026-11-01T11:50:08.213Z",
+      "current": false,
+      "fair": false,
+      "results": [
+        {
+          "agent": "claude",
+          "accepted": true,
+          "agentExit": 0,
+          "verifiedAt": 25532
+        },
+        {
+          "agent": "codex",
+          "accepted": false,
+          "agentExit": null,
+          "verifiedAt": null,
+          "error": "Agent exited null (SIGKILL): "
+        }
+      ]
+    }
+  ]
+}

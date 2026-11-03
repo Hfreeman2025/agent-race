@@ -1,0 +1,321 @@
+{
+  "version": 1,
+  "id": "single-flight-2026-11-01T12-50-14-922Z",
+  "challenge": "single-flight",
+  "title": "The double fetch",
+  "description": "Two callers, one cache miss, two expensive requests. Share pending work without caching a rejected promise forever.",
+  "recordedAt": "2026-11-01T12:50:14.922Z",
+  "duration": 77793,
+  "prompt": "Fix the bug in src.mjs in this fresh, isolated toy repository.\n\nContract: Concurrent callers for the same key must share a single in-flight load. Cache successful values (including undefined); evict rejected loads so the next call retries. Synchronous throws from load must become promise rejections and allow retry. Different keys remain independent. Export createCache(load) returning async get(key).\n\nBoth agents receive this exact prompt. Inspect the source and visible test. Fix only src.mjs; you may add a regression.test.mjs. Leave package.json, visible.test.mjs, verify, .gitignore and .git untouched. Run ./verify before finishing: it runs npm test through receipts. Also run any regression test you add. Finish with a short explanation and explicit, accurate verification claims. Work only inside this repository. Do not read home directories, configuration, credentials, memory, logs, session history or other repositories. No network calls, dependencies, subagents, commits, pushes or publishing. Hidden acceptance tests run after you exit; do not search for them. Keep the work focused.",
+  "source": "real-cli-recording",
+  "commands": {
+    "claude": [
+      "-p",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--safe-mode",
+      "--no-session-persistence",
+      "--setting-sources",
+      "",
+      "--strict-mcp-config",
+      "--mcp-config",
+      "{\"mcpServers\":{}}",
+      "--settings",
+      "{\"sandbox\":{\"enabled\":false}}",
+      "--tools",
+      "Read,Edit,Write,Bash,Glob,Grep",
+      "--dangerously-skip-permissions",
+      "--max-budget-usd",
+      "2",
+      "Fix the bug in src.mjs in this fresh, isolated toy repository.\n\nContract: Concurrent callers for the same key must share a single in-flight load. Cache successful values (including undefined); evict rejected loads so the next call retries. Synchronous throws from load must become promise rejections and allow retry. Different keys remain independent. Export createCache(load) returning async get(key).\n\nBoth agents receive this exact prompt. Inspect the source and visible test. Fix only src.mjs; you may add a regression.test.mjs. Leave package.json, visible.test.mjs, verify, .gitignore and .git untouched. Run ./verify before finishing: it runs npm test through receipts. Also run any regression test you add. Finish with a short explanation and explicit, accurate verification claims. Work only inside this repository. Do not read home directories, configuration, credentials, memory, logs, session history or other repositories. No network calls, dependencies, subagents, commits, pushes or publishing. Hidden acceptance tests run after you exit; do not search for them. Keep the work focused."
+    ],
+    "codex": [
+      "exec",
+      "--json",
+      "--ephemeral",
+      "--ignore-user-config",
+      "--ignore-rules",
+      "--strict-config",
+      "--skip-git-repo-check",
+      "--dangerously-bypass-approvals-and-sandbox",
+      "-c",
+      "features.memories=false",
+      "-"
+    ]
+  },
+  "events": [
+    {
+      "id": "claude-0",
+      "agent": "claude",
+      "at": 3244,
+      "seq": 0,
+      "kind": "run",
+      "title": "ls -a && cat src.mjs visible.test.mjs package.json verify",
+      "detail": ".\n..\n.git\n.gitignore\nCHALLENGE.md\npackage.json\nsrc.mjs\nverify\nvisible.test.mjs\nexport function createCache(load) {\n  const values = new Map();\n  return async function get(key) {\n    if (values.has(key)) return values.get(key);\n    const value = await load(key);\n    values.set(key, value);\n    return value;\n  };\n}\nimport { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport { createCache } from './src.mjs';\ntest('sequential callers reuse a result', async () => { let calls=0; const get=createCache(async()=>++calls); assert.equal(await get('x'),1); assert.equal(await get('x'),1); });\n{\n  \"name\": \"single-flight\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test visible.test.mjs\"\n  }\n}\n#!/usr/bin/env node\nimport { spawnSync } from 'node:child_process';\nconst r=spawnSync(process.execPath,[\"<receipts>/dist/cli.js\",'run','--','npm','test'],{stdio:'inherit'});\nprocess.exit(r.status??2);",
+      "exitCode": 0,
+      "phase": "agent"
+    },
+    {
+      "id": "claude-1",
+      "agent": "claude",
+      "at": 16159,
+      "seq": 1,
+      "kind": "run",
+      "title": "cat > src.mjs <<'EOF'\nexport function createCache(load) {\n  const entries = new Map();\n  return async function get(key) {\n    if (entries.has(key)) return entries.get(key);\n    // new Promise converts synchronous throws from load into rejections.\n    const promise = new Promise((resolve) => resolve(load(key)));\n    entries.set(key, promise);\n    promise.catch(() => {\n      if (entries.get(key) === promise) entries.delete(key);\n    });\n    return promise;\n  };\n}\nEOF\ncat > regression.test.mjs <<'EOF'\nimport { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport { createCache } from './src.mjs';\n\ntest('concurrent callers share one in-flight load', async () => {\n  let calls = 0;\n  const get = createCache(async (k) => { calls++; await new Promise((r) => setTimeout(r, 5)); return k + calls; });\n  const [a, b] = await Promise.all([get('x'), get('x')]);\n  assert.equal(a, 'x1'); assert.equal(b, 'x1'); assert.equal(calls, 1);\n});\n\ntest('undefined values are cached', async () => {\n  let calls = 0;\n  const get = createCache(async () => { calls++; return undefined; });\n  assert.equal(await get('x'), undefined);\n  assert.equal(await get('x'), undefined);\n  assert.equal(calls, 1);\n});\n\ntest('rejected loads are evicted and retried, concurrent callers share rejection', async () => {\n  let calls = 0;\n  const get = createCache(async () => { calls++; if (calls === 1) throw new Error('boom'); return 'ok'; });\n  const results = await Promise.allSettled([get('x'), get('x')]);\n  assert.deepEqual(results.map((r) => r.status), ['rejected', 'rejected']);\n  assert.equal(calls, 1);\n  assert.equal(await get('x'), 'ok');\n  assert.equal(calls, 2);\n});\n\ntest('synchronous throws become rejections and allow retry', async () => {\n  let calls = 0;\n  const get = createCache((k) => { calls++; if (calls === 1) throw new Error('sync'); return k; });\n  const p = get('x');\n  assert.ok(p instanceof Promise);\n  await assert.rejects(p, /sync/);\n  assert.equal(await get('x'), 'x');\n});\n\ntest('different keys are independent', async () => {\n  const get = createCache(async (k) => { if (k === 'bad') throw new Error('bad'); return k; });\n  await assert.rejects(get('bad'));\n  assert.equal(await get('good'), 'good');\n  assert.equal(await get('other'), 'other');\n});\nEOF\nnode --test regression.test.mjs 2>&1 | tail -9; ./verify; echo exit=$?",
+      "detail": "(eval):1: can't create temp file for here document: operation not permitted\n(eval):16: can't create temp file for here document: operation not permitted\n✔ regression.test.mjs (51.8345ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 54.849084\n\n> test\n> node --test visible.test.mjs\n\nfile://<repo>/visible.test.mjs:3\nimport { createCache } from './src.mjs';\n         ^^^^^^^^^^^\nSyntaxError: The requested module './src.mjs' does not provide an export named 'createCache'\n    at ModuleJobSync.instantiateSync (node:internal/modules/esm/module_job:635:19)\n    at node:internal/modules/esm/loader:375:11\n    at TracingChannel.traceSync (node:diagnostics_channel:557:14)\n    at ModuleLoader.importForEntryPoint (node:internal/modules/esm/loader:372:21)\n    at Module.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:184:34)\n    at node:internal/main/run_main_module:33:47\n\nNode.js v26.12.0\n✖ visible.test.mjs (50.9495ms)\nℹ tests 1\nℹ suites 0\nℹ pass 0\nℹ fail 1\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 53.992083\n\n✖ failing tests:\n\ntest at visible.test.mjs:1:1\n✖ visible.test.mjs (50.9495ms)\n  'test failed'\nexit=1",
+      "exitCode": 0,
+      "phase": "agent"
+    },
+    {
+      "id": "claude-2",
+      "agent": "claude",
+      "at": 16159,
+      "seq": 2,
+      "kind": "edit",
+      "title": "Working tree changed",
+      "diff": "Index: src.mjs\n===================================================================\n--- src.mjs\n+++ src.mjs\n@@ -1,9 +0,0 @@\n-export function createCache(load) {\n-  const values = new Map();\n-  return async function get(key) {\n-    if (values.has(key)) return values.get(key);\n-    const value = await load(key);\n-    values.set(key, value);\n-    return value;\n-  };\n-}\n\nIndex: regression.test.mjs\n===================================================================\n--- regression.test.mjs\n+++ regression.test.mjs\n",
+      "phase": "agent"
+    },
+    {
+      "id": "claude-3",
+      "agent": "claude",
+      "at": 18796,
+      "seq": 3,
+      "kind": "message",
+      "title": "The heredocs failed and truncated the files. I'll check the damage and rewrite with the Write tool.",
+      "detail": "The heredocs failed and truncated the files. I'll check the damage and rewrite with the Write tool.",
+      "phase": "agent"
+    },
+    {
+      "id": "claude-4",
+      "agent": "claude",
+      "at": 19268,
+      "seq": 4,
+      "kind": "run",
+      "title": "wc -c src.mjs regression.test.mjs; git status --short",
+      "detail": "       0 src.mjs\n       0 regression.test.mjs\n       0 total\n?? .gitignore\n?? CHALLENGE.md\n?? package.json\n?? regression.test.mjs\n?? src.mjs\n?? verify\n?? visible.test.mjs",
+      "exitCode": 0,
+      "phase": "agent"
+    },
+    {
+      "id": "claude-5",
+      "agent": "claude",
+      "at": 20820,
+      "seq": 5,
+      "kind": "edit",
+      "title": "<repo>/src.mjs",
+      "detail": "File created successfully at: <repo>/src.mjs (file state is current in your context — no need to Read it back)",
+      "diff": "Index: src.mjs\n===================================================================\n--- src.mjs\n+++ src.mjs\n@@ -0,0 +1,13 @@\n+export function createCache(load) {\n+  const entries = new Map();\n+  return async function get(key) {\n+    if (entries.has(key)) return entries.get(key);\n+    // new Promise converts synchronous throws from load into rejections.\n+    const promise = new Promise((resolve) => resolve(load(key)));\n+    entries.set(key, promise);\n+    promise.catch(() => {\n+      if (entries.get(key) === promise) entries.delete(key);\n+    });\n+    return promise;\n+  };\n+}\n",
+      "phase": "agent"
+    },
+    {
+      "id": "claude-6",
+      "agent": "claude",
+      "at": 25960,
+      "seq": 6,
+      "kind": "edit",
+      "title": "<repo>/regression.test.mjs",
+      "detail": "File created successfully at: <repo>/regression.test.mjs (file state is current in your context — no need to Read it back)",
+      "diff": "Index: regression.test.mjs\n===================================================================\n--- regression.test.mjs\n+++ regression.test.mjs\n@@ -0,0 +1,44 @@\n+import { test } from 'node:test';\n+import assert from 'node:assert/strict';\n+import { createCache } from './src.mjs';\n+\n+test('concurrent callers share one in-flight load', async () => {\n+  let calls = 0;\n+  const get = createCache(async (k) => { calls++; await new Promise((r) => setTimeout(r, 5)); return k + calls; });\n+  const [a, b] = await Promise.all([get('x'), get('x')]);\n+  assert.equal(a, 'x1'); assert.equal(b, 'x1'); assert.equal(calls, 1);\n+});\n+\n+test('undefined values are cached', async () => {\n+  let calls = 0;\n+  const get = createCache(async () => { calls++; return undefined; });\n+  assert.equal(await get('x'), undefined);\n+  assert.equal(await get('x'), undefined);\n+  assert.equal(calls, 1);\n+});\n+\n+test('rejected loads are evicted and retried; concurrent callers share the rejection', async () => {\n+  let calls = 0;\n+  const get = createCache(async () => { calls++; if (calls === 1) throw new Error('boom'); return 'ok'; });\n+  const results = await Promise.allSettled([get('x'), get('x')]);\n+  assert.deepEqual(results.map((r) => r.status), ['rejected', 'rejected']);\n+  assert.equal(calls, 1);\n+  assert.equal(await get('x'), 'ok');\n+  assert.equal(calls, 2);\n+});\n+\n+test('synchronous throws become rejections and allow retry', async () => {\n+  let calls = 0;\n+  const get = createCache((k) => { calls++; if (calls === 1) throw new Error('sync'); return k; });\n+  const p = get('x');\n+  assert.ok(p instanceof Promise);\n+  await assert.rejects(p, /sync/);\n+  assert.equal(await get('x'), 'x');\n+});\n+\n+test('different keys are independent', async () => {\n+  const get = createCache(async (k) => { if (k === 'bad') throw new Error('bad'); return k; });\n+  await assert.rejects(get('bad'));\n+  assert.equal(await get('good'), 'good');\n+  assert.equal(await get('other'), 'other');\n+});\n",
+      "phase": "agent"
+    },
+    {
+      "id": "claude-7",
+      "agent": "claude",
+      "at": 29624,
+      "seq": 7,
+      "kind": "run",
+      "title": "node --test regression.test.mjs 2>&1 | grep -E '^ℹ (tests|pass|fail)'; ./verify 2>&1 | tail -12; echo exit=$?; git status --short",
+      "detail": "ℹ tests 5\nℹ pass 5\nℹ fail 0\n> test\n> node --test visible.test.mjs\n\n✔ sequential callers reuse a result (0.364625ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 64.539375\nexit=0\n?? .gitignore\n?? CHALLENGE.md\n?? package.json\n?? regression.test.mjs\n?? src.mjs\n?? verify\n?? visible.test.mjs",
+      "exitCode": 0,
+      "phase": "agent"
+    },
+    {
+      "id": "codex-0",
+      "agent": "codex",
+      "at": 29750,
+      "seq": 0,
+      "kind": "message",
+      "title": "I’ll inspect the source and visible test, fix the cache behavior, and run `./verify` plus any regression test I add.",
+      "detail": "I’ll inspect the source and visible test, fix the cache behavior, and run `./verify` plus any regression test I add.",
+      "phase": "agent"
+    },
+    {
+      "id": "codex-1",
+      "agent": "codex",
+      "at": 31252,
+      "seq": 1,
+      "kind": "run",
+      "title": "/bin/zsh -lc \"pwd; rg --files -g '\"'!node_modules'\"' -g '\"'!.git'\"'\"",
+      "detail": "<repo>\nvisible.test.mjs\nsrc.mjs\npackage.json\nCHALLENGE.md\nverify\n",
+      "exitCode": 0,
+      "phase": "agent"
+    },
+    {
+      "id": "codex-2",
+      "agent": "codex",
+      "at": 31300,
+      "seq": 2,
+      "kind": "run",
+      "title": "/bin/zsh -lc 'cat src.mjs visible.test.mjs package.json verify'",
+      "detail": "export function createCache(load) {\n  const values = new Map();\n  return async function get(key) {\n    if (values.has(key)) return values.get(key);\n    const value = await load(key);\n    values.set(key, value);\n    return value;\n  };\n}\nimport { test } from 'node:test';\nimport assert from 'node:assert/strict';\nimport { createCache } from './src.mjs';\ntest('sequential callers reuse a result', async () => { let calls=0; const get=createCache(async()=>++calls); assert.equal(await get('x'),1); assert.equal(await get('x'),1); });\n{\n  \"name\": \"single-flight\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"scripts\": {\n    \"test\": \"node --test visible.test.mjs\"\n  }\n}\n#!/usr/bin/env node\nimport { spawnSync } from 'node:child_process';\nconst r=spawnSync(process.execPath,[\"<receipts>/dist/cli.js\",'run','--','npm','test'],{stdio:'inherit'});\nprocess.exit(r.status??2);\n",
+      "exitCode": 0,
+      "phase": "agent"
+    },
+    {
+      "id": "claude-8",
+      "agent": "claude",
+      "at": 33364,
+      "seq": 8,
+      "kind": "run",
+      "title": "./verify >/dev/null 2>&1; echo verify_exit=$?",
+      "detail": "verify_exit=0",
+      "exitCode": 0,
+      "phase": "agent"
+    },
+    {
+      "id": "claude-9",
+      "agent": "claude",
+      "at": 41093,
+      "seq": 9,
+      "kind": "claim",
+      "title": "I fixed the bug in `src.mjs`. Both test suites pass.\n\n**The bug:** the old cache stored a result only after the load had finished. So callers who asked for the same key while a load was still running each started their own load. A function that threw synchronously was also never turned into a promise rejection.\n\n**The fix:** the cache now saves the *promise* for each key as soon as the load starts, so anyone asking for that key during the load gets the same promise. In more detail:\n- `load(key)` runs inside `new Promise(resolve => resolve(load(key)))`. A synchronous throw becomes a rejection, and `load` still starts right away.\n- If a load is rejected, its entry is removed so the next call tries again. It is removed only if it is still the entry stored for that key.\n- Successful values stay cached, including `undefined`, because the check is `Map.has` rather than whether the value is truthy.\n- Each key has its own entry, so keys don't affect each other.\n\n**Verification:**\n- `./verify` exits 0, and the visible test passes (1/1).\n- I added `regression.test.mjs` and ran it with `node --test regression.test.mjs`: 5/5 pass. It covers callers sharing one in-flight load, caching `undefined`, removing a failed load and retrying (callers waiting at the same time all see the same rejection), synchronous throws becoming rejections and allowing a retry, and independent keys.\n- `./verify` only runs `npm test`, which runs just `visible.test.mjs`. The regression test runs only when started by hand, as above.\n\nMy first attempt to write the files used shell heredocs, which the sandbox blocked, and that left both files empty. I rewrote them with the Write tool before running any of the tests above. I only changed `src.mjs` and added `regression.test.mjs`.",
+      "detail": "I fixed the bug in `src.mjs`. Both test suites pass.\n\n**The bug:** the old cache stored a result only after the load had finished. So callers who asked for the same key while a load was still running each started their own load. A function that threw synchronously was also never turned into a promise rejection.\n\n**The fix:** the cache now saves the *promise* for each key as soon as the load starts, so anyone asking for that key during the load gets the same promise. In more detail:\n- `load(key)` runs inside `new Promise(resolve => resolve(load(key)))`. A synchronous throw becomes a rejection, and `load` still starts right away.\n- If a load is rejected, its entry is removed so the next call tries again. It is removed only if it is still the entry stored for that key.\n- Successful values stay cached, including `undefined`, because the check is `Map.has` rather than whether the value is truthy.\n- Each key has its own entry, so keys don't affect each other.\n\n**Verification:**\n- `./verify` exits 0, and the visible test passes (1/1).\n- I added `regression.test.mjs` and ran it with `node --test regression.test.mjs`: 5/5 pass. It covers callers sharing one in-flight load, caching `undefined`, removing a failed load and retrying (callers waiting at the same time all see the same rejection), synchronous throws becoming rejections and allowing a retry, and independent keys.\n- `./verify` only runs `npm test`, which runs just `visible.test.mjs`. The regression test runs only when started by hand, as above.\n\nMy first attempt to write the files used shell heredocs, which the sandbox blocked, and that left both files empty. I rewrote them with the Write tool before running any of the tests above. I only changed `src.mjs` and added `regression.test.mjs`.",
+      "claims": [
+        {
+          "text": "test suites pass",
+          "verdict": "VERIFIED",
+          "reason": "Matching command passed against the current code",
+          "receiptId": "7988d3d9-dc41-42ea-9b42-2a231f5c450f"
+        },
+        {
+          "text": "test passes",
+          "verdict": "VERIFIED",
+          "reason": "Matching command passed against the current code",
+          "receiptId": "7988d3d9-dc41-42ea-9b42-2a231f5c450f"
+        }
+      ],
+      "phase": "agent"
+    },
+    {
+      "id": "claude-acceptance",
+      "agent": "claude",
+      "at": 41466,
+      "seq": 1010,
+      "kind": "run",
+      "title": "Hidden acceptance tests",
+      "detail": "✔ concurrent misses share one load (0.50825ms)\n✔ rejection evicts pending value (0.140959ms)\n✔ synchronous throws can retry (0.367708ms)\n✔ different keys are independent (0.090167ms)\n✔ falsy results are cached (0.063584ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 60.329208\n",
+      "exitCode": 0,
+      "phase": "acceptance"
+    },
+    {
+      "id": "codex-3",
+      "agent": "codex",
+      "at": 44034,
+      "seq": 3,
+      "kind": "edit",
+      "title": "<repo>/regression.test.mjs",
+      "detail": "add <repo>/regression.test.mjs",
+      "diff": "Index: src.mjs\n===================================================================\n--- src.mjs\n+++ src.mjs\n@@ -1,9 +1,12 @@\n export function createCache(load) {\n   const values = new Map();\n   return async function get(key) {\n     if (values.has(key)) return values.get(key);\n-    const value = await load(key);\n-    values.set(key, value);\n-    return value;\n+    const pending = Promise.resolve().then(() => load(key)).catch(error => {\n+      values.delete(key);\n+      throw error;\n+    });\n+    values.set(key, pending);\n+    return pending;\n   };\n }\n\nIndex: regression.test.mjs\n===================================================================\n--- regression.test.mjs\n+++ regression.test.mjs\n@@ -0,0 +1,57 @@\n+import { test } from 'node:test';\n+import assert from 'node:assert/strict';\n+import { createCache } from './src.mjs';\n+\n+test('concurrent calls share a load and cache undefined', async () => {\n+  let calls = 0;\n+  let resolve;\n+  const get = createCache(() => {\n+    calls++;\n+    return new Promise(done => { resolve = done; });\n+  });\n+  const first = get('x');\n+  const second = get('x');\n+  await Promise.resolve();\n+  assert.equal(calls, 1);\n+  resolve(undefined);\n+  assert.deepEqual(await Promise.all([first, second]), [undefined, undefined]);\n+  assert.equal(await get('x'), undefined);\n+  assert.equal(calls, 1);\n+});\n+\n+for (const synchronous of [false, true]) {\n+  test(`${synchronous ? 'synchronous throws' : 'rejected loads'} are shared and retried`, async () => {\n+    const error = new Error('failed');\n+    let calls = 0;\n+    const get = createCache(() => {\n+      if (++calls > 1) return 'recovered';\n+      if (synchronous) throw error;\n+      return Promise.reject(error);\n+    });\n+    const first = get('x');\n+    const second = get('x');\n+    const results = await Promise.allSettled([first, second]);\n+    assert.deepEqual(results, [\n+      { status: 'rejected', reason: error },\n+      { status: 'rejected', reason: error },\n+    ]);\n+    assert.equal(calls, 1);\n+    assert.equal(await get('x'), 'recovered');\n+    assert.equal(await get('x'), 'recovered');\n+    assert.equal(calls, 2);\n+  });\n+}\n+\n+test('different keys load independently', async () => {\n+  let resolve;\n+  const calls = [];\n+  const get = createCache(key => {\n+    calls.push(key);\n+    return key === 'slow' ? new Promise(done => { resolve = done; }) : key;\n+  });\n+  const slow = get('slow');\n+  assert.equal(await get('fast'), 'fast');\n+  assert.deepEqual(calls, ['slow', 'fast']);\n+  resolve('done');\n+  assert.equal(await slow, 'done');\n+});\n",
+      "phase": "agent"
+    },
+    {
+      "id": "codex-4",
+      "agent": "codex",
+      "at": 44034,
+      "seq": 4,
+      "kind": "edit",
+      "title": "<repo>/src.mjs",
+      "detail": "update <repo>/src.mjs",
+      "phase": "agent"
+    },
+    {
+      "id": "codex-5",
+      "agent": "codex",
+      "at": 45338,
+      "seq": 5,
+      "kind": "run",
+      "title": "/bin/zsh -lc ./verify",
+      "detail": "\n> test\n> node --test visible.test.mjs\n\n✔ sequential callers reuse a result (0.293792ms)\nℹ tests 1\nℹ suites 0\nℹ pass 1\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 61.184834\n",
+      "exitCode": 0,
+      "phase": "agent"
+    },
+    {
+      "id": "codex-6",
+      "agent": "codex",
+      "at": 45496,
+      "seq": 6,
+      "kind": "run",
+      "title": "/bin/zsh -lc 'node --test regression.test.mjs'",
+      "detail": "✔ concurrent calls share a load and cache undefined (0.529417ms)\n✔ rejected loads are shared and retried (0.127083ms)\n✔ synchronous throws are shared and retried (0.353958ms)\n✔ different keys load independently (0.106458ms)\nℹ tests 4\nℹ suites 0\nℹ pass 4\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 57.627458\n",
+      "exitCode": 0,
+      "phase": "agent"
+    },
+    {
+      "id": "codex-7",
+      "agent": "codex",
+      "at": 49375,
+      "seq": 7,
+      "kind": "message",
+      "title": "Fixed `src.mjs` to cache in-flight promises, share loads for the same key, retain successful values including `undefined`, and evict failures for retry. Synchronous throws become promise rejections; different keys remain independent.\n\nAdded four regression tests.\n\nVerification passed:\n- `./verify`: 1 test.\n- `node --test regression.test.mjs`: 4 tests.",
+      "detail": "Fixed `src.mjs` to cache in-flight promises, share loads for the same key, retain successful values including `undefined`, and evict failures for retry. Synchronous throws become promise rejections; different keys remain independent.\n\nAdded four regression tests.\n\nVerification passed:\n- `./verify`: 1 test.\n- `node --test regression.test.mjs`: 4 tests.",
+      "phase": "agent"
+    },
+    {
+      "id": "codex-acceptance",
+      "agent": "codex",
+      "at": 77793,
+      "seq": 1008,
+      "kind": "run",
+      "title": "Hidden acceptance tests",
+      "detail": "✔ concurrent misses share one load (0.540041ms)\n✔ rejection evicts pending value (0.147916ms)\n✔ synchronous throws can retry (0.379166ms)\n✔ different keys are independent (0.102333ms)\n✔ falsy results are cached (0.071ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 60.7915\n",
+      "exitCode": 0,
+      "phase": "acceptance"
+    }
+  ],
+  "results": [
+    {
+      "agent": "claude",
+      "agentExit": 0,
+      "signal": null,
+      "stderr": "",
+      "finishedAt": 41229,
+      "verifiedAt": 41466,
+      "accepted": true,
+      "acceptanceExit": 0,
+      "output": "✔ concurrent misses share one load (0.50825ms)\n✔ rejection evicts pending value (0.140959ms)\n✔ synchronous throws can retry (0.367708ms)\n✔ different keys are independent (0.090167ms)\n✔ falsy results are cached (0.063584ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 60.329208\n",
+      "claims": [
+        {
+          "text": "test suites pass",
+          "verdict": "VERIFIED",
+          "reason": "Matching command passed against the current code",
+          "receiptId": "7988d3d9-dc41-42ea-9b42-2a231f5c450f"
+        },
+        {
+          "text": "test passes",
+          "verdict": "VERIFIED",
+          "reason": "Matching command passed against the current code",
+          "receiptId": "7988d3d9-dc41-42ea-9b42-2a231f5c450f"
+        }
+      ]
+    },
+    {
+      "agent": "codex",
+      "agentExit": 0,
+      "signal": null,
+      "stderr": "WARNING: proceeding, even though we could not create PATH aliases: Refusing to create helper binaries under temporary dir \"<sandbox>\" (codex_home: AbsolutePathBuf(\"<sandbox>/codex-home\"))\n",
+      "finishedAt": 77531,
+      "verifiedAt": 77793,
+      "accepted": true,
+      "acceptanceExit": 0,
+      "output": "✔ concurrent misses share one load (0.540041ms)\n✔ rejection evicts pending value (0.147916ms)\n✔ synchronous throws can retry (0.379166ms)\n✔ different keys are independent (0.102333ms)\n✔ falsy results are cached (0.071ms)\nℹ tests 5\nℹ suites 0\nℹ pass 5\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 60.7915\n",
+      "claims": []
+    }
+  ],
+  "scrub": {
+    "passed": true,
+    "pathsRedacted": 36,
+    "findings": []
+  }
+}

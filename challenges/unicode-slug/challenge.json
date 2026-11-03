@@ -1,0 +1,6 @@
+{
+  "id": "unicode-slug",
+  "title": "Lost in translation",
+  "description": "A slugifier quietly drops accented letters. Make canonically equivalent text produce the same readable URL.",
+  "contract": "Use Unicode compatibility decomposition (NFKD), lowercase, remove all combining marks (Unicode Mark category), retain all Unicode letters and numbers, replace each run of other characters with one hyphen, and trim edge hyphens. Empty input returns an empty string. Do not transliterate non-Latin letters."
+}

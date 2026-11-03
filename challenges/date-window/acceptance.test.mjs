@@ -1,0 +1,11 @@
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { dateRange } from './src.mjs';
+test('end is exclusive', () => assert.deepEqual(dateRange('2024-01-01','2024-01-03'), ['2024-01-01','2024-01-02']));
+test('equal endpoints', () => assert.deepEqual(dateRange('2024-01-01','2024-01-01'), []));
+test('leap boundary', () => assert.deepEqual(dateRange('2024-02-28','2024-03-01'), ['2024-02-28','2024-02-29']));
+test('UTC through clock changes', () => assert.deepEqual(dateRange('2024-03-30','2024-04-02'), ['2024-03-30','2024-03-31','2024-04-01']));
+test('reversed interval', () => assert.throws(() => dateRange('2024-03-02','2024-03-01'), RangeError));
+test('invalid calendar date', () => assert.throws(() => dateRange('2024-02-30','2024-03-01'), RangeError));
+test('strict ISO format', () => assert.throws(() => dateRange('01/02/2024','2024-03-01'), RangeError));
+test('year boundary', () => assert.deepEqual(dateRange('2023-12-31','2024-01-02'), ['2023-12-31','2024-01-01']));

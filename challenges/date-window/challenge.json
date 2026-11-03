@@ -1,0 +1,6 @@
+{
+  "id": "date-window",
+  "title": "One day too many",
+  "description": "A billing window leaks its final day. Repair half-open UTC date ranges, including leap days and reversed intervals.",
+  "contract": "Return calendar dates as YYYY-MM-DD for the half-open interval [start, end), using UTC arithmetic. Both inputs must be real calendar dates in strict YYYY-MM-DD format (years 1000–9999). Equal endpoints return []; reversed endpoints and invalid dates throw RangeError."
+}

@@ -1,0 +1,20 @@
+name: check
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  quality:
+    # Local receipts is intentionally not fetched from an invented remote.
+    # Provision a macOS runner with Node >=22.12 and a built receipts checkout.
+    runs-on: [self-hosted, macOS, agent-race]
+    timeout-minutes: 10
+    env:
+      RECEIPTS_PATH: ${{ vars.RECEIPTS_PATH }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci --ignore-scripts
+      - run: npm run gate

@@ -1,0 +1,46 @@
+{
+  "source": "actual-cli-local-provider-failure-no-model",
+  "data": [
+    {
+      "type": "thread.started",
+      "thread_id": "01a196f5-c457-7f42-a746-379f878a6b81"
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_0",
+        "type": "error",
+        "message": "Codex is ignoring 1 unrecognized configuration setting. Check for typos or deprecated settings.\n  session-flags: `features.skills` is ignored."
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_1",
+        "type": "error",
+        "message": "Codex is ignoring 1 unrecognized configuration setting. Check for typos or deprecated settings.\n  session-flags: `features.skills` is ignored."
+      }
+    },
+    {
+      "type": "item.completed",
+      "item": {
+        "id": "item_2",
+        "type": "error",
+        "message": "Model metadata for `offline-fixture` not found. Defaulting to fallback metadata; this can degrade performance and cause issues."
+      }
+    },
+    {
+      "type": "turn.started"
+    },
+    {
+      "type": "error",
+      "message": "{\"error\":{\"message\":\"Offline fixture provider deliberately unavailable\",\"type\":\"invalid_request_error\"}}"
+    },
+    {
+      "type": "turn.failed",
+      "error": {
+        "message": "{\"error\":{\"message\":\"Offline fixture provider deliberately unavailable\",\"type\":\"invalid_request_error\"}}"
+      }
+    }
+  ]
+}

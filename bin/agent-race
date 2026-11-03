@@ -1,0 +1,4 @@
+#!/bin/sh
+set -eu
+RACE_DIR=$(CDPATH= cd -- "$(dirname -- "$0")/.." && pwd)
+exec "$RACE_DIR/node_modules/.bin/tsx" "$RACE_DIR/src/harness/cli.ts" "$@"

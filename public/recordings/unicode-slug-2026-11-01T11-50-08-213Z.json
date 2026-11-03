@@ -1,0 +1,182 @@
+{
+  "version": 1,
+  "id": "unicode-slug-2026-11-01T11-50-08-213Z",
+  "challenge": "unicode-slug",
+  "title": "Lost in translation",
+  "description": "A slugifier quietly drops accented letters. Make canonically equivalent text produce the same readable URL.",
+  "recordedAt": "2026-11-01T11:50:08.213Z",
+  "duration": 25532,
+  "prompt": "Fix the bug in src.mjs in this fresh, isolated toy repository.\n\nContract: Use Unicode compatibility decomposition (NFKD), lowercase, remove all combining marks (Unicode Mark category), retain all Unicode letters and numbers, replace each run of other characters with one hyphen, and trim edge hyphens. Empty input returns an empty string. Do not transliterate non-Latin letters.\n\nBoth agents receive this exact prompt. Inspect the source and visible test. Fix only src.mjs; you may add a regression.test.mjs. Leave package.json, visible.test.mjs, verify, .gitignore and .git untouched. Run ./verify before finishing: it runs npm test through receipts. Also run any regression test you add. Finish with a short explanation and explicit, accurate verification claims. Work only inside this repository. Do not read home directories, configuration, credentials, memory, logs, session history or other repositories. No network calls, dependencies, subagents, commits, pushes or publishing. Hidden acceptance tests run after you exit; do not search for them. Keep the work focused.",
+  "source": "real-cli-recording",
+  "commands": {
+    "claude": [
+      "-p",
+      "--output-format",
+      "stream-json",
+      "--verbose",
+      "--safe-mode",
+      "--no-session-persistence",
+      "--setting-sources",
+      "",
+      "--strict-mcp-config",
+      "--mcp-config",
+      "{\"mcpServers\":{}}",
+      "--tools",
+      "Read,Edit,Write,Bash,Glob,Grep",
+      "--dangerously-skip-permissions",
+      "--max-budget-usd",
+      "2",
+      "Fix the bug in src.mjs in this fresh, isolated toy repository.\n\nContract: Use Unicode compatibility decomposition (NFKD), lowercase, remove all combining marks (Unicode Mark category), retain all Unicode letters and numbers, replace each run of other characters with one hyphen, and trim edge hyphens. Empty input returns an empty string. Do not transliterate non-Latin letters.\n\nBoth agents receive this exact prompt. Inspect the source and visible test. Fix only src.mjs; you may add a regression.test.mjs. Leave package.json, visible.test.mjs, verify, .gitignore and .git untouched. Run ./verify before finishing: it runs npm test through receipts. Also run any regression test you add. Finish with a short explanation and explicit, accurate verification claims. Work only inside this repository. Do not read home directories, configuration, credentials, memory, logs, session history or other repositories. No network calls, dependencies, subagents, commits, pushes or publishing. Hidden acceptance tests run after you exit; do not search for them. Keep the work focused."
+    ],
+    "codex": [
+      "exec",
+      "--json",
+      "--ephemeral",
+      "--ignore-user-config",
+      "--ignore-rules",
+      "--skip-git-repo-check",
+      "--dangerously-bypass-approvals-and-sandbox",
+      "-c",
+      "features.memories=false",
+      "-c",
+      "features.skills=false",
+      "Fix the bug in src.mjs in this fresh, isolated toy repository.\n\nContract: Use Unicode compatibility decomposition (NFKD), lowercase, remove all combining marks (Unicode Mark category), retain all Unicode letters and numbers, replace each run of other characters with one hyphen, and trim edge hyphens. Empty input returns an empty string. Do not transliterate non-Latin letters.\n\nBoth agents receive this exact prompt. Inspect the source and visible test. Fix only src.mjs; you may add a regression.test.mjs. Leave package.json, visible.test.mjs, verify, .gitignore and .git untouched. Run ./verify before finishing: it runs npm test through receipts. Also run any regression test you add. Finish with a short explanation and explicit, accurate verification claims. Work only inside this repository. Do not read home directories, configuration, credentials, memory, logs, session history or other repositories. No network calls, dependencies, subagents, commits, pushes or publishing. Hidden acceptance tests run after you exit; do not search for them. Keep the work focused."
+    ]
+  },
+  "events": [
+    {
+      "id": "codex-acceptance",
+      "agent": "codex",
+      "at": 419,
+      "seq": 1000,
+      "kind": "run",
+      "title": "Hidden acceptance tests",
+      "detail": "✖ precomposed accents (0.9985ms)\n✖ canonical equivalence (0.688875ms)\n✖ compatibility forms (0.117125ms)\n✖ combining marks outside the basic block (0.071541ms)\n✖ separators collapse and trim (0.077208ms)\n✖ non Latin text is retained (0.098208ms)\n✔ emoji are separators (0.08025ms)\n✔ empty input (0.040125ms)\n✔ punctuation only (0.055208ms)\nℹ tests 9\nℹ suites 0\nℹ pass 3\nℹ fail 6\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 98.426959\n\n✖ failing tests:\n\ntest at .acceptance.test.mjs:4:1\n✖ precomposed accents (0.9985ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'cr-me-br-l-e'\n  - 'creme-brulee'\n       ^\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:4:42)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.start (node:internal/test_runner/test:1262:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'cr-me-br-l-e',\n    expected: 'creme-brulee',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at .acceptance.test.mjs:5:1\n✖ canonical equivalence (0.688875ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  'caf' !== 'cafe'\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:5:44)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'caf',\n    expected: 'cafe',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at .acceptance.test.mjs:6:1\n✖ compatibility forms (0.117125ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  '' !== 'full-123'\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:6:42)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: '',\n    expected: 'full-123',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at .acceptance.test.mjs:7:1\n✖ combining marks outside the basic block (0.071541ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  'a-bc' !== 'abc'\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:7:62)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'a-bc',\n    expected: 'abc',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at .acceptance.test.mjs:8:1\n✖ separators collapse and trim (0.077208ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'd-j-vu'\n  - 'deja-vu'\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:8:51)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'd-j-vu',\n    expected: 'deja-vu',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at .acceptance.test.mjs:9:1\n✖ non Latin text is retained (0.098208ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  '' !== '東京-カフェ'\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:9:49)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: '',\n    expected: '東京-カフェ',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n",
+      "exitCode": 1,
+      "phase": "acceptance"
+    },
+    {
+      "id": "claude-0",
+      "agent": "claude",
+      "at": 2971,
+      "seq": 0,
+      "kind": "read",
+      "title": "ls -a && cat src.mjs visible.test.mjs package.json verify",
+      "detail": "EPERM: operation not permitted, mkdir '/private/tmp/claude-501/-private-tmp-agent-race-UC6w4d-claude-repo'",
+      "phase": "agent"
+    },
+    {
+      "id": "claude-1",
+      "agent": "claude",
+      "at": 4866,
+      "seq": 1,
+      "kind": "read",
+      "title": "<repo>/src.mjs",
+      "detail": "1\texport function slugify(input) {\n2\t  return input.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');\n3\t}\n4\t",
+      "phase": "agent"
+    },
+    {
+      "id": "claude-2",
+      "agent": "claude",
+      "at": 5311,
+      "seq": 2,
+      "kind": "read",
+      "title": "<repo>/visible.test.mjs",
+      "detail": "1\timport { test } from 'node:test';\n2\timport assert from 'node:assert/strict';\n3\timport { slugify } from './src.mjs';\n4\ttest('ordinary words', () => assert.equal(slugify('Hello World'), 'hello-world'));\n5\t",
+      "phase": "agent"
+    },
+    {
+      "id": "claude-3",
+      "agent": "claude",
+      "at": 9910,
+      "seq": 3,
+      "kind": "edit",
+      "title": "<repo>/src.mjs",
+      "detail": "The file <repo>/src.mjs has been updated successfully. (file state is current in your context — no need to Read it back)",
+      "diff": "Index: src.mjs\n===================================================================\n--- src.mjs\n+++ src.mjs\n@@ -1,3 +1,8 @@\n export function slugify(input) {\n-  return input.toLowerCase().trim().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');\n+  return input\n+    .normalize('NFKD')\n+    .toLowerCase()\n+    .replace(/\\p{M}+/gu, '')\n+    .replace(/[^\\p{L}\\p{N}]+/gu, '-')\n+    .replace(/^-+|-+$/g, '');\n }\n",
+      "phase": "agent"
+    },
+    {
+      "id": "claude-4",
+      "agent": "claude",
+      "at": 13733,
+      "seq": 4,
+      "kind": "edit",
+      "title": "<repo>/regression.test.mjs",
+      "detail": "File created successfully at: <repo>/regression.test.mjs (file state is current in your context — no need to Read it back)",
+      "diff": "Index: regression.test.mjs\n===================================================================\n--- regression.test.mjs\n+++ regression.test.mjs\n@@ -0,0 +1,13 @@\n+import { test } from 'node:test';\n+import assert from 'node:assert/strict';\n+import { slugify } from './src.mjs';\n+\n+test('empty input', () => assert.equal(slugify(''), ''));\n+test('only separators', () => assert.equal(slugify(' -_!? '), ''));\n+test('strips diacritics', () => assert.equal(slugify('Crème Brûlée'), 'creme-brulee'));\n+test('compatibility decomposition', () => assert.equal(slugify('ﬁle ① ２'), 'file-1-2'));\n+test('keeps non-Latin letters', () => assert.equal(slugify('Привет мир'), 'привет-мир'));\n+test('keeps CJK and other numbers', () => assert.equal(slugify('東京 ٣'), '東京-٣'));\n+test('marks produced by lowercasing are removed', () => assert.equal(slugify('İstanbul'), 'istanbul'));\n+test('collapses runs and trims edges', () => assert.equal(slugify('--a  &&  b--'), 'a-b'));\n+test('Devanagari marks removed, letters kept', () => assert.equal(slugify('हिन्दी'), 'हनद'));\n",
+      "phase": "agent"
+    },
+    {
+      "id": "claude-5",
+      "agent": "claude",
+      "at": 16098,
+      "seq": 5,
+      "kind": "run",
+      "title": "./verify; echo EXIT=$?; node --test regression.test.mjs; echo EXIT=$?",
+      "detail": "EPERM: operation not permitted, mkdir '/private/tmp/claude-501/-private-tmp-agent-race-UC6w4d-claude-repo'",
+      "exitCode": null,
+      "phase": "agent"
+    },
+    {
+      "id": "claude-6",
+      "agent": "claude",
+      "at": 18053,
+      "seq": 6,
+      "kind": "run",
+      "title": "./verify; echo EXIT=$?; node --test regression.test.mjs; echo EXIT=$?",
+      "detail": "EPERM: operation not permitted, mkdir '/private/tmp/claude-501/-private-tmp-agent-race-UC6w4d-claude-repo'",
+      "exitCode": null,
+      "phase": "agent"
+    },
+    {
+      "id": "claude-7",
+      "agent": "claude",
+      "at": 24911,
+      "seq": 7,
+      "kind": "message",
+      "title": "I've fixed `src.mjs` and added `regression.test.mjs`, but none of the tests have been run. Every command, including `./verify`, failed before it started with `EPERM: operation not permitted, mkdir '/private/tmp/claude-501/...'`. The tool couldn't create its working directory outside the repo, and turning off the sandbox didn't help.\n\n**The bug:** `slugify` only kept ASCII `a-z0-9` and never applied NFKD normalisation. So `Crème` became `cr-me`, `ﬁ` and `①` were dropped instead of becoming `fi` and `1`, and non-Latin text like `Привет` was removed entirely.\n\n**The fix** (`src.mjs`), following the contract's order:\n1. `normalize('NFKD')`\n2. `toLowerCase()`\n3. Remove all combining marks with `/\\p{M}+/gu`. This step comes after lowercasing, which also catches marks that lowercasing itself creates (`İ` lowercases to `i` plus a combining dot).\n4. Replace each run of characters that aren't letters or numbers with one `-`, using `/[^\\p{L}\\p{N}]+/gu`.\n5. Trim hyphens from both ends.\n\nEmpty input returns `''`. Non-Latin letters are kept as they are, not transliterated.\n\n**The regression test** (`regression.test.mjs`) covers:\n- empty input and input that is only separators\n- removing accents\n- compatibility characters (`ﬁ`, `①`, full-width `２`)\n- Cyrillic, CJK and Arabic-Indic digits\n- `İstanbul`\n- collapsing runs and trimming edges\n- removing Devanagari marks\n\nTo check the work, run `./verify` and then `node --test regression.test.mjs` yourself. Nothing else in the repo was changed.",
+      "detail": "I've fixed `src.mjs` and added `regression.test.mjs`, but none of the tests have been run. Every command, including `./verify`, failed before it started with `EPERM: operation not permitted, mkdir '/private/tmp/claude-501/...'`. The tool couldn't create its working directory outside the repo, and turning off the sandbox didn't help.\n\n**The bug:** `slugify` only kept ASCII `a-z0-9` and never applied NFKD normalisation. So `Crème` became `cr-me`, `ﬁ` and `①` were dropped instead of becoming `fi` and `1`, and non-Latin text like `Привет` was removed entirely.\n\n**The fix** (`src.mjs`), following the contract's order:\n1. `normalize('NFKD')`\n2. `toLowerCase()`\n3. Remove all combining marks with `/\\p{M}+/gu`. This step comes after lowercasing, which also catches marks that lowercasing itself creates (`İ` lowercases to `i` plus a combining dot).\n4. Replace each run of characters that aren't letters or numbers with one `-`, using `/[^\\p{L}\\p{N}]+/gu`.\n5. Trim hyphens from both ends.\n\nEmpty input returns `''`. Non-Latin letters are kept as they are, not transliterated.\n\n**The regression test** (`regression.test.mjs`) covers:\n- empty input and input that is only separators\n- removing accents\n- compatibility characters (`ﬁ`, `①`, full-width `２`)\n- Cyrillic, CJK and Arabic-Indic digits\n- `İstanbul`\n- collapsing runs and trimming edges\n- removing Devanagari marks\n\nTo check the work, run `./verify` and then `node --test regression.test.mjs` yourself. Nothing else in the repo was changed.",
+      "phase": "agent"
+    },
+    {
+      "id": "claude-acceptance",
+      "agent": "claude",
+      "at": 25532,
+      "seq": 1008,
+      "kind": "run",
+      "title": "Hidden acceptance tests",
+      "detail": "✔ precomposed accents (1.427334ms)\n✔ canonical equivalence (0.693542ms)\n✔ compatibility forms (0.221583ms)\n✔ combining marks outside the basic block (0.174542ms)\n✔ separators collapse and trim (0.093416ms)\n✔ non Latin text is retained (1.176916ms)\n✔ emoji are separators (0.104ms)\n✔ empty input (0.060125ms)\n✔ punctuation only (0.06325ms)\nℹ tests 9\nℹ suites 0\nℹ pass 9\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 91.55275\n",
+      "exitCode": 0,
+      "phase": "acceptance"
+    }
+  ],
+  "results": [
+    {
+      "agent": "claude",
+      "agentExit": 0,
+      "finishedAt": 25195,
+      "verifiedAt": 25532,
+      "accepted": true,
+      "acceptanceExit": 0,
+      "output": "✔ precomposed accents (1.427334ms)\n✔ canonical equivalence (0.693542ms)\n✔ compatibility forms (0.221583ms)\n✔ combining marks outside the basic block (0.174542ms)\n✔ separators collapse and trim (0.093416ms)\n✔ non Latin text is retained (1.176916ms)\n✔ emoji are separators (0.104ms)\n✔ empty input (0.060125ms)\n✔ punctuation only (0.06325ms)\nℹ tests 9\nℹ suites 0\nℹ pass 9\nℹ fail 0\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 91.55275\n",
+      "claims": []
+    },
+    {
+      "agent": "codex",
+      "agentExit": null,
+      "finishedAt": 28,
+      "verifiedAt": null,
+      "accepted": false,
+      "acceptanceExit": 1,
+      "output": "✖ precomposed accents (0.9985ms)\n✖ canonical equivalence (0.688875ms)\n✖ compatibility forms (0.117125ms)\n✖ combining marks outside the basic block (0.071541ms)\n✖ separators collapse and trim (0.077208ms)\n✖ non Latin text is retained (0.098208ms)\n✔ emoji are separators (0.08025ms)\n✔ empty input (0.040125ms)\n✔ punctuation only (0.055208ms)\nℹ tests 9\nℹ suites 0\nℹ pass 3\nℹ fail 6\nℹ cancelled 0\nℹ skipped 0\nℹ todo 0\nℹ duration_ms 98.426959\n\n✖ failing tests:\n\ntest at .acceptance.test.mjs:4:1\n✖ precomposed accents (0.9985ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'cr-me-br-l-e'\n  - 'creme-brulee'\n       ^\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:4:42)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.start (node:internal/test_runner/test:1262:17)\n      at startSubtestAfterBootstrap (node:internal/test_runner/harness:387:17) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'cr-me-br-l-e',\n    expected: 'creme-brulee',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at .acceptance.test.mjs:5:1\n✖ canonical equivalence (0.688875ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  'caf' !== 'cafe'\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:5:44)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async startSubtestAfterBootstrap (node:internal/test_runner/harness:387:3) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'caf',\n    expected: 'cafe',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at .acceptance.test.mjs:6:1\n✖ compatibility forms (0.117125ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  '' !== 'full-123'\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:6:42)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: '',\n    expected: 'full-123',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at .acceptance.test.mjs:7:1\n✖ combining marks outside the basic block (0.071541ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  'a-bc' !== 'abc'\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:7:62)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'a-bc',\n    expected: 'abc',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at .acceptance.test.mjs:8:1\n✖ separators collapse and trim (0.077208ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  + actual - expected\n  \n  + 'd-j-vu'\n  - 'deja-vu'\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:8:51)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: 'd-j-vu',\n    expected: 'deja-vu',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n\ntest at .acceptance.test.mjs:9:1\n✖ non Latin text is retained (0.098208ms)\n  AssertionError [ERR_ASSERTION]: Expected values to be strictly equal:\n  \n  '' !== '東京-カフェ'\n  \n      at TestContext.<anonymous> (file://<repo>/.acceptance.test.mjs:9:49)\n      at Test.runInAsyncScope (node:async_hooks:226:14)\n      at Test.run (node:internal/test_runner/test:1402:25)\n      at Test.processPendingSubtests (node:internal/test_runner/test:974:18)\n      at Test.postRun (node:internal/test_runner/test:1542:19)\n      at Test.run (node:internal/test_runner/test:1467:12)\n      at async Test.processPendingSubtests (node:internal/test_runner/test:974:7) {\n    generatedMessage: true,\n    code: 'ERR_ASSERTION',\n    actual: '',\n    expected: '東京-カフェ',\n    operator: 'strictEqual',\n    diff: 'simple'\n  }\n",
+      "claims": [],
+      "error": "Agent exited null (SIGKILL): "
+    }
+  ],
+  "scrub": {
+    "passed": true,
+    "pathsRedacted": 29,
+    "findings": []
+  }
+}

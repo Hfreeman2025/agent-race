@@ -1,0 +1,21 @@
+Rejected additional attempt — single-flight, attempt 3 of 4, 1 November 2026
+
+The harness printed:
+  Starting single-flight: two isolated lanes; 240 s maximum each. No retries.
+  codex: NOT ACCEPTED at 0.29 s; 0 final claim(s).
+  claude: ACCEPTED at 42.25 s; 2 final claim(s).
+  Scrub: 24 known paths redacted; 1 finding(s).
+  Recording save blocked: home directory. No recording or streams saved.
+
+This is a terminal-only failure report, not a replay or reconstructed agent events.
+The full candidate was rejected and discarded by the privacy guard. No unsafe
+candidate recording was saved or hand-edited to force it through the check.
+
+Subsequent model-free diagnostics reproduced the launch failure: the full
+multiline Codex prompt passed as argv through sandbox-exec terminated with
+SIGKILL before stdout/stderr. The exact same prompt via supported stdin started
+normally and reached a deliberately failing localhost-only provider.
+
+A separate offline diagnostic reproduced Git's warning about an inaccessible
+implicit global ignore path. Setting a lane-local XDG_CONFIG_HOME eliminated
+that warning while retaining home/sibling content denial.

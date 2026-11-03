@@ -1,0 +1,26 @@
+{
+  "id": "claude-8",
+  "argv": null,
+  "cwd": null,
+  "shell": null,
+  "exitCode": 0,
+  "signal": null,
+  "startedAt": null,
+  "endedAt": null,
+  "stdout": {
+    "sha256": null,
+    "bytes": null
+  },
+  "stderr": {
+    "sha256": null,
+    "bytes": null
+  },
+  "recordedEvent": {
+    "displayCommand": "./verify >/dev/null 2>&1; echo verify_exit=$?",
+    "cwdMarker": "<repo>",
+    "recordedAt": "2026-11-01T12:50:14.922Z",
+    "at": 33364,
+    "atUnit": "ms",
+    "clock": "stream-arrival"
+  }
+}
