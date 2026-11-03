@@ -1,6 +1,6 @@
 # Dependency licences
 
-Generated from package-lock.json by npm run licenses. All 130 locked dependency packages (including optional platform binaries) satisfy the MIT / Apache-2.0 / BSD / ISC allowlist. Local receipts is MIT and is used read-only from its own built repository. Big Shoulders Display 700 is bundled under SIL OFL-1.1; the font and full notice hashes are checked separately. See [DEPENDENCIES.md](../DEPENDENCIES.md) for the pinned source and attribution. No external font requests are made.
+Generated from package-lock.json by npm run licenses. All 130 locked dependency packages (including optional platform binaries) satisfy the MIT / Apache-2.0 / BSD / ISC allowlist. Local receipts is MIT and is used read-only from its own built repository. IBM Plex Sans, Mono and Sans Condensed are bundled under SIL OFL-1.1; the font and full notice hashes are checked separately. See [DEPENDENCIES.md](../DEPENDENCIES.md) for the pinned source and attribution. No external font requests are made.
 
 | Package | Version | SPDX licence |
 | --- | --- | --- |

@@ -1,0 +1,184 @@
+/* Plex roles: reading/interface, measured data, broadcast signs. */
+b,
+strong {
+  font-weight: 600;
+}
+#app :where(button, select, input) {
+  line-height: 1.2;
+}
+#app
+  :where(
+    h1,
+    h2,
+    h3,
+    .challenge-label,
+    .record-label,
+    .panel-heading,
+    .session strong,
+    .lane-head > span,
+    .event-kind,
+    .event-open,
+    .booth-label,
+    .tower-foot,
+    .evidence-rule,
+    .evidence-heading,
+    .dialog-head,
+    .gap > span
+  ) {
+  font-family: var(--display);
+}
+#app :where(.wordmark h1) {
+  font-size: 26px;
+  font-weight: 600;
+}
+#app :where(.challenge h2) {
+  font-size: 24px;
+  font-weight: 600;
+}
+#app :where(.clock output) {
+  font-family: var(--data);
+  font-size: 38px;
+  letter-spacing: -1px;
+}
+#app :where(.clock > span, .tower-row > b, .position, .event time, #call-time) {
+  font-family: var(--data);
+}
+#app :where(.tower-row > b) {
+  font-size: 16px;
+}
+#app :where(.split strong) {
+  font-family: var(--data);
+  font-size: 22px;
+  letter-spacing: -0.7px;
+}
+#app :where(.gap > strong) {
+  font-family: var(--data);
+  font-size: 32px;
+  letter-spacing: -1px;
+}
+#app :where(.booth-copy > p) {
+  font-size: 25px;
+  letter-spacing: -0.25px;
+}
+@media (max-width: 759px) {
+  #app :where(.wordmark h1) {
+    font-size: 20px;
+  }
+  #app :where(.challenge h2) {
+    font-size: 20px;
+  }
+  #app :where(.clock output) {
+    font-size: 28px;
+    min-width: 104px;
+    letter-spacing: -1px;
+  }
+  #app :where(.split strong) {
+    font-size: 16px;
+    min-height: 27px;
+    letter-spacing: -0.65px;
+  }
+  #app :where(.tower-row > b) {
+    font-size: 11px;
+  }
+  #app :where(.gap > strong) {
+    font-size: 20px;
+    letter-spacing: -0.8px;
+  }
+  #app :where(.booth-copy > p) {
+    font-size: 18px;
+    line-height: 1.15;
+    letter-spacing: 0;
+  }
+}
+#app
+  :where(
+    code,
+    pre,
+    kbd,
+    samp,
+    .receipt small,
+    .edge-heading > span,
+    .trace-ruler span,
+    .patch-line > span,
+    #event-count
+  ) {
+  font-family: var(--data);
+}
+#app :where(.record-label, .lane-head > span, .event-open, .tower-foot, .gap > span) {
+  font-weight: 500;
+}
+#flight
+  :where(
+    .trace-caption,
+    .trace-lane-label span,
+    .patch-file > span,
+    .flight-clock p,
+    .trace-criterion > span,
+    #proof-state > span
+  ) {
+  font-weight: 500;
+}
+#flight :where(#proof-facts li) {
+  font-family: var(--data);
+  font-weight: 400;
+}
+#app :where(.booth-copy > button) {
+  font-family: var(--display);
+  font-weight: 500;
+}
+/* Reserve changing text runs so swap and the first real split cannot move neighbours. */
+#app :where(#flight-view) {
+  inline-size: 144px;
+}
+#app :where(#replay-view) {
+  inline-size: 124px;
+}
+#app :where(.record-label) {
+  inline-size: 200px;
+  flex-shrink: 0;
+}
+#app :where(.masthead > button) {
+  inline-size: 108px;
+}
+#app :where(.lane-head > span) {
+  inline-size: 150px;
+  flex-shrink: 0;
+  text-align: right;
+}
+#app :where(.tower-row > b) {
+  inline-size: 7ch;
+  flex-shrink: 0;
+  text-align: right;
+}
+@media (max-width: 759px) {
+  #app :where(#flight-view) {
+    inline-size: 130px;
+  }
+  #app :where(#replay-view) {
+    inline-size: 112px;
+  }
+  #app :where(.record-label) {
+    inline-size: 72px;
+  }
+  #app :where(.masthead > button) {
+    inline-size: 76px;
+  }
+  #app :where(.lane-head > span) {
+    inline-size: 126px;
+  }
+}
+#app :where(.view-switch button) {
+  white-space: nowrap;
+}
+#app :where(.lane-head > span) {
+  font-weight: 600;
+}
+#app :where(h4) {
+  font-family: var(--display);
+  font-weight: 600;
+}
+#flight :where(#proof-facts dt, #proof-facts dd, .proof-wire dt, .proof-wire dd) {
+  font-family: var(--data);
+  font-weight: 400;
+  font-size: 11px;
+}

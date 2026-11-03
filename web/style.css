@@ -1,12 +1,8 @@
-@font-face {
-  font-family: "Big Shoulders Display";
-  src: url("/fonts/big-shoulders-display-latin-700-normal.woff2") format("woff2");
-  font-style: normal;
-  font-weight: 700;
-  font-display: swap;
-}
 :root {
-  font-family: "Avenir Next", Avenir, Arial, sans-serif;
+  --reading: "IBM Plex Sans", Arial, sans-serif;
+  --data: "IBM Plex Mono", monospace;
+  line-height: 1.3;
+  font-family: var(--reading);
   color: #f2f4ec;
   background: #111410;
   font-synthesis: none;
@@ -15,7 +11,7 @@
   --yellow: #e4ff4f;
   --claude: #ffad79;
   --codex: #7fdcdb;
-  --display: "Big Shoulders Display", "Arial Narrow", Arial, sans-serif;
+  --display: "IBM Plex Sans Condensed", "Arial Narrow", Arial, sans-serif;
   color-scheme: dark;
 }
 * {
@@ -100,7 +96,7 @@ button[hidden],
   text-decoration: none;
 }
 .wordmark h1 {
-  font: 700 28px / 1 var(--display);
+  font: 600 28px / 1 var(--display);
   letter-spacing: 0.4px;
 }
 .brand-mark {
@@ -150,11 +146,11 @@ main {
 .challenge-label {
   font-size: 11px;
   color: var(--yellow);
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 1px;
 }
 .challenge h2 {
-  font: 700 28px / 1 var(--display);
+  font: 600 28px / 1 var(--display);
   text-transform: uppercase;
   white-space: nowrap;
 }
@@ -215,7 +211,7 @@ main {
   white-space: nowrap;
 }
 .clock output {
-  font: 700 48px / 0.95 var(--display);
+  font: 600 48px / 0.95 var(--display);
   font-variant-numeric: tabular-nums;
   letter-spacing: 1px;
   min-width: 130px;
@@ -293,7 +289,7 @@ select {
   position: relative;
 }
 .position {
-  font: 700 26px / 1 var(--display);
+  font: 600 26px / 1 var(--display);
   color: var(--muted);
   width: 18px;
 }
@@ -343,7 +339,7 @@ select {
 }
 .gap > strong {
   display: block;
-  font: 700 46px / 1.2 var(--display);
+  font: 600 46px / 1.2 var(--display);
   letter-spacing: 1px;
   color: var(--yellow);
   min-height: 56px;
@@ -384,7 +380,7 @@ select {
   gap: 12px;
 }
 .lane-head h3 {
-  font: 700 25px / 1 var(--display);
+  font: 600 25px / 1 var(--display);
   letter-spacing: 0.5px;
   text-transform: uppercase;
 }
@@ -426,7 +422,7 @@ select {
 }
 .split strong {
   display: block;
-  font: 700 28px / 1.1 var(--display);
+  font: 600 28px / 1.1 var(--display);
   letter-spacing: 0.25px;
   min-height: 32px;
 }
@@ -503,7 +499,7 @@ select {
 }
 .photo strong {
   display: block;
-  font: 700 24px / 1.15 var(--display);
+  font: 600 24px / 1.15 var(--display);
   text-transform: uppercase;
   margin-top: 4px;
 }
@@ -632,7 +628,7 @@ select {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  font-weight: 700;
+  font-weight: 600;
   font-size: 11px;
   letter-spacing: 0.8px;
   min-height: 76px;
@@ -643,7 +639,7 @@ select {
   letter-spacing: 0;
 }
 .booth-copy > p {
-  font: 700 28px / 1.12 var(--display);
+  font: 600 28px / 1.12 var(--display);
   max-width: 950px;
   letter-spacing: 0.2px;
   min-height: 58px;
@@ -705,7 +701,7 @@ select {
   line-height: 1.6;
 }
 #inspector-body .evidence-heading {
-  font: 700 21px / 1.2 var(--display);
+  font: 600 21px / 1.2 var(--display);
   margin: 10px 0;
 }
 #inspector-body .evidence-paragraph {
@@ -717,7 +713,7 @@ select {
   letter-spacing: 0.3px;
 }
 pre {
-  font-family: Menlo, Consolas, monospace;
+  font-family: var(--data);
   font-size: 11px;
   line-height: 1.65;
   white-space: pre-wrap;
@@ -784,12 +780,10 @@ pre {
 }
 .ledger-head h2,
 .method h2 {
-  font: 700 25px / 1.1 var(--display);
+  font: 600 25px / 1.1 var(--display);
 }
 .ledger-head h2 > span {
-  font:
-    12px / 1 Arial,
-    sans-serif;
+  font: 12px / 1 var(--reading);
   color: var(--muted);
   margin-left: 10px;
 }
@@ -881,12 +875,12 @@ dialog::backdrop {
   overflow-wrap: anywhere;
 }
 #dialog-body h2 {
-  font: 700 36px / 1.1 var(--display);
+  font: 600 36px / 1.1 var(--display);
   text-transform: uppercase;
   margin-bottom: 18px;
 }
 #dialog-body h3 {
-  font: 700 25px / 1.2 var(--display);
+  font: 600 25px / 1.2 var(--display);
   margin: 22px 0 12px;
 }
 #dialog-body p {
@@ -1134,7 +1128,7 @@ dialog::backdrop {
     letter-spacing: 0.3px;
   }
   .gap > strong {
-    font: 700 20px / 1 var(--display);
+    font: 600 20px / 1 var(--display);
     letter-spacing: 0.5px;
     min-height: 0;
   }

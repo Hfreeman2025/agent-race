@@ -7,7 +7,7 @@ const require = createRequire("<local path>");
 const pw = require("playwright");
 const base = process.env.RACE_PREVIEW_URL ?? "http://127.0.0.1:4317";
 const pass = process.env.RACE_SHOT_PASS ?? "pass2";
-const out = `shots/v3/${pass}`;
+const out = `${process.env.RACE_SHOT_ROOT ?? "shots/v3"}/${pass}`;
 await mkdir(out, { recursive: true });
 const report = {
   pass,

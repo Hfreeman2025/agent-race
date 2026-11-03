@@ -1,20 +1,21 @@
 import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 
-const assets = [
-  [
-    "big-shoulders-display-latin-700-normal.woff2",
-    "d2d55115d0d7047ce956d4eb8f2fbfe7915552cf4fabb294a5979705ec9687ac",
-  ],
-  [
-    "OFL-Big-Shoulders-Display.txt",
-    "18aabf190848725e2576eefb5c29ba06aac1029d02132252a7f312eac2e50cf3",
-  ],
-];
-for (const [file, expected] of assets) {
-  const bytes = await readFile(new URL(`../public/fonts/${file}`, import.meta.url));
-  if (createHash("sha256").update(bytes).digest("hex") !== expected)
-    throw new Error(`Pinned font asset changed: ${file}; review its source and licence.`);
+const assets = JSON.parse(
+  await readFile(new URL("../public/fonts/plex-manifest.json", import.meta.url), "utf8"),
+);
+if (assets.length !== 11 || new Set(assets.map((asset) => asset.file)).size !== 11)
+  throw new Error("Expected eight Plex faces and three full OFL notices");
+for (const asset of assets) {
+  if (!/^[a-zA-Z0-9.-]+$/u.test(asset.file)) throw new Error("Font asset must be a basename");
+  const bytes = await readFile(new URL(`../public/fonts/${asset.file}`, import.meta.url));
+  if (
+    asset.version !== "5.3.0" ||
+    asset.license !== "OFL-1.1" ||
+    bytes.length !== asset.bytes ||
+    createHash("sha256").update(bytes).digest("hex") !== asset.sha256
+  )
+    throw new Error(`Pinned Plex asset changed: ${asset.file}`);
 }
 
 const lock = JSON.parse(await readFile(new URL("../package-lock.json", import.meta.url), "utf8"));
@@ -42,8 +43,8 @@ if (failures.length) throw new Error(`Dependency licence gate failed:\n${failure
 await mkdir("docs", { recursive: true });
 await writeFile(
   "docs/dependency-licenses.md",
-  `# Dependency licences\n\nGenerated from package-lock.json by npm run licenses. All ${rows.length} locked dependency packages (including optional platform binaries) satisfy the MIT / Apache-2.0 / BSD / ISC allowlist. Local receipts is MIT and is used read-only from its own built repository. Big Shoulders Display 700 is bundled under SIL OFL-1.1; the font and full notice hashes are checked separately. See [DEPENDENCIES.md](../DEPENDENCIES.md) for the pinned source and attribution. No external font requests are made.\n\n| Package | Version | SPDX licence |\n| --- | --- | --- |\n${rows.map((r) => `| ${r.join(" | ")} |`).join("\n")}\n`,
+  `# Dependency licences\n\nGenerated from package-lock.json by npm run licenses. All ${rows.length} locked dependency packages (including optional platform binaries) satisfy the MIT / Apache-2.0 / BSD / ISC allowlist. Local receipts is MIT and is used read-only from its own built repository. IBM Plex Sans, Mono and Sans Condensed are bundled under SIL OFL-1.1; the font and full notice hashes are checked separately. See [DEPENDENCIES.md](../DEPENDENCIES.md) for the pinned source and attribution. No external font requests are made.\n\n| Package | Version | SPDX licence |\n| --- | --- | --- |\n${rows.map((r) => `| ${r.join(" | ")} |`).join("\n")}\n`,
 );
 console.log(
-  `PASS: ${rows.length} locked packages; permissive licence allowlist. Local receipts: MIT. Big Shoulders Display: OFL-1.1, font and notice hashes verified.`,
+  `PASS: ${rows.length} locked packages; permissive licence allowlist. Local receipts: MIT. IBM Plex: OFL-1.1, font and notice hashes verified.`,
 );

@@ -30,7 +30,7 @@
 }
 #flight :where(.flight-kicker) {
   font-size: 12px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.08em;
   color: var(--yellow);
 }
@@ -38,7 +38,7 @@
   color: var(--muted);
 }
 #flight :where(.flight-heading h2) {
-  font: 700 42px / 0.98 var(--display);
+  font: 600 42px / 0.98 var(--display);
   letter-spacing: -0.01em;
   margin-top: 10px;
 }
@@ -46,7 +46,7 @@
   text-align: right;
 }
 #flight :where(.flight-clock > span) {
-  font: 700 60px / 0.95 var(--display);
+  font: 600 60px / 0.95 var(--display);
   font-variant-numeric: tabular-nums;
 }
 #flight :where(.flight-clock > span span) {
@@ -137,7 +137,7 @@
   gap: 12px;
 }
 #flight :where(.trace-lane-label strong) {
-  font: 700 23px / 1 var(--display);
+  font: 600 23px / 1 var(--display);
   color: var(--claude);
 }
 #flight :where(.trace-lane.codex strong) {
@@ -196,7 +196,7 @@
   z-index: 1;
 }
 #flight :where(.trace-node b) {
-  font: 700 15px / 1 var(--display);
+  font: 600 15px / 1 var(--display);
 }
 #flight :where(.trace-node.claude) {
   border-top: 2px solid #8b6145;
@@ -230,10 +230,7 @@
   bottom: 34px;
   transform: translateX(-50%);
   padding: 7px 9px;
-  font:
-    500 11px / 1.3 "Avenir Next",
-    Arial,
-    sans-serif;
+  font: 500 11px / 1.3 var(--reading);
   background: #edf2e4;
   color: #111410;
   border: 1px solid #111410;
@@ -281,11 +278,11 @@
 }
 #flight :where(.trace-call > span) {
   font-size: 11px;
-  font-weight: 700;
+  font-weight: 600;
   letter-spacing: 0.04em;
 }
 #flight :where(.trace-call strong) {
-  font: 700 28px / 1.1 var(--display);
+  font: 600 28px / 1.1 var(--display);
 }
 #flight :where(.trace-call p) {
   font-size: 12px;
@@ -323,7 +320,7 @@
   min-height: 64px;
 }
 #flight :where(.patch-heading h3) {
-  font: 700 25px / 1 var(--display);
+  font: 600 25px / 1 var(--display);
 }
 #flight :where(.patch-heading button) {
   padding: 6px 9px;
@@ -348,10 +345,7 @@
   border-bottom: 1px solid var(--line);
 }
 #flight :where(.patch-file select) {
-  font:
-    600 13px / 1.4 "Avenir Next",
-    Arial,
-    sans-serif;
+  font: 600 13px / 1.4 var(--reading);
   border: 0;
   background: #111410;
   max-width: 65%;
@@ -385,10 +379,7 @@
 }
 #flight :where(.patch-line code) {
   white-space: pre;
-  font:
-    11px / 1.55 Menlo,
-    Consolas,
-    monospace;
+  font: 11px / 1.55 var(--data);
 }
 #flight :where(.patch-line.added) {
   color: #cde5a4;
@@ -454,9 +445,7 @@
 }
 #flight :where(.evidence-pair > strong) {
   display: inline-block;
-  font:
-    600 12px / 1.5 Menlo,
-    monospace;
+  font: 600 12px / 1.5 var(--data);
   color: var(--yellow);
   margin-bottom: 8px;
 }
@@ -470,9 +459,7 @@
   font-size: 10px;
 }
 #flight :where(.evidence-pair pre) {
-  font:
-    11px / 1.6 Menlo,
-    monospace;
+  font: 11px / 1.6 var(--data);
   margin: 4px 0;
   white-space: pre-wrap;
   overflow-wrap: anywhere;
@@ -496,7 +483,7 @@
   border-bottom: 1px solid var(--line);
 }
 #flight :where(.flight-proof h3) {
-  font: 700 42px / 1.1 var(--display);
+  font: 600 42px / 1.1 var(--display);
   margin: 8px 0 12px;
 }
 #flight :where(.flight-proof p) {
@@ -668,9 +655,7 @@
   color: var(--muted);
 }
 #flight :where(.trace-criterion code) {
-  font:
-    12px / 1.6 Menlo,
-    monospace;
+  font: 12px / 1.6 var(--data);
   color: var(--yellow);
   overflow: hidden;
   white-space: nowrap;
@@ -715,9 +700,7 @@
   color: var(--muted);
 }
 #flight :where(.trace-raw pre) {
-  font:
-    10px / 1.7 Menlo,
-    monospace;
+  font: 10px / 1.7 var(--data);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   max-height: 240px;
@@ -728,7 +711,7 @@
   padding: 16px 0;
 }
 #flight :where(.trace-loading h2) {
-  font: 700 42px / 1 var(--display);
+  font: 600 42px / 1 var(--display);
   margin: 10px 0 24px;
 }
 #flight :where(.trace-loading > p) {
@@ -745,7 +728,7 @@
   height: 50%;
   padding: 20px;
   color: var(--claude);
-  font: 700 25px / 1 var(--display);
+  font: 600 25px / 1 var(--display);
   border-bottom: 1px solid var(--line);
 }
 #flight :where(.loading-lanes p:last-child) {
@@ -755,10 +738,7 @@
 #flight :where(.loading-lanes span) {
   display: block;
   color: var(--muted);
-  font:
-    12px / 1.5 "Avenir Next",
-    Arial,
-    sans-serif;
+  font: 12px / 1.5 var(--reading);
   margin-top: 10px;
 }
 #flight :where(.trace-unavailable button) {
@@ -786,7 +766,7 @@
 }
 #flight :where(#proof-state > strong) {
   display: block;
-  font: 700 33px / 1.1 var(--display);
+  font: 600 33px / 1.1 var(--display);
   margin: 5px 0 8px;
 }
 #flight :where(#proof-state[data-state="verified"]) {
@@ -833,9 +813,7 @@
   overflow-wrap: anywhere;
 }
 #flight :where(#proof-facts code) {
-  font:
-    10px / 1.7 Menlo,
-    monospace;
+  font: 10px / 1.7 var(--data);
 }
 #flight :where(#proof-facts details) {
   margin: 18px 0;
@@ -860,9 +838,7 @@
   overflow-wrap: anywhere;
 }
 #flight :where(.proof-trust code) {
-  font:
-    10px / 1.6 Menlo,
-    monospace;
+  font: 10px / 1.6 var(--data);
 }
 #flight :where(.proof-downloads) {
   margin-top: 18px;
@@ -872,9 +848,7 @@
 #flight :where(.proof-downloads pre) {
   overflow-wrap: anywhere;
   white-space: pre-wrap;
-  font:
-    10px / 1.7 Menlo,
-    monospace;
+  font: 10px / 1.7 var(--data);
   padding: 12px;
   border: 1px solid var(--line);
 }
@@ -918,9 +892,7 @@
   margin-top: 12px;
 }
 #flight :where(.proof-wire pre) {
-  font:
-    10px / 1.7 Menlo,
-    monospace;
+  font: 10px / 1.7 var(--data);
   white-space: pre-wrap;
   overflow-wrap: anywhere;
   border-left: 2px solid var(--yellow);
@@ -940,14 +912,10 @@
   background: #222b1a;
 }
 #flight :where(.byte-window b) {
-  font:
-    12px / 1.4 Menlo,
-    monospace;
+  font: 12px / 1.4 var(--data);
 }
 #flight :where(.byte-window small) {
-  font:
-    11px / 1.4 Menlo,
-    monospace;
+  font: 11px / 1.4 var(--data);
   color: var(--muted);
   margin-top: 4px;
 }
@@ -971,10 +939,7 @@
   color: var(--muted);
 }
 .archive-choice select {
-  font:
-    12px / 1.4 "Avenir Next",
-    Arial,
-    sans-serif;
+  font: 12px / 1.4 var(--reading);
   background: #111410;
   color: #d3dbc9;
   border: 1px solid var(--line);
@@ -1027,4 +992,65 @@
 #flight :where(.trace-node) {
   width: 70px;
   justify-content: space-between;
+}
+#flight
+  :where(
+    .flight-kicker,
+    .trace-bar strong,
+    .trace-lane-label span,
+    .trace-caption,
+    .trace-call > span,
+    .patch-file > span,
+    .edge-heading,
+    .evidence-pair > div > span,
+    .flight-clock p,
+    .trace-criterion > span,
+    #proof-state > span
+  ) {
+  font-family: var(--display);
+}
+#flight :where(.flight-clock > span) {
+  font-family: var(--data);
+  font-size: 42px;
+  letter-spacing: -1.5px;
+}
+#flight :where(.flight-clock > span > span) {
+  font-family: var(--reading);
+  font-size: 20px;
+  letter-spacing: 0;
+}
+#flight :where(.flight-heading h2) {
+  font-size: 36px;
+}
+#flight :where(.trace-node) {
+  font-family: var(--display);
+  font-size: 10px;
+}
+#flight :where(.trace-node b) {
+  font-family: var(--data);
+  font-size: 10px;
+}
+#flight :where(.trace-lane-label strong) {
+  font-size: 20px;
+}
+#flight :where(.trace-call strong) {
+  font-size: 24px;
+}
+#flight :where(.trace-loading) {
+  min-height: 100dvh;
+}
+@media (max-width: 760px) {
+  #flight :where(.flight-clock > span) {
+    font-size: 30px;
+    letter-spacing: -1.2px;
+  }
+  #flight :where(.flight-clock > span > span) {
+    font-size: 16px;
+  }
+  #flight :where(.flight-heading h2) {
+    font-size: 28px;
+  }
+  #flight :where(.trace-call strong) {
+    font-size: 22px;
+  }
 }
