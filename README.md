@@ -70,12 +70,13 @@ Original JSON: `public/recordings/single-flight-2026-11-01T12-50-14-922Z.json`. 
 The harness requires **macOS**, `sandbox-exec`, Git, existing authenticated `claude` and `codex` CLIs, and a built local receipts checkout. It never signs in, creates accounts, fetches keys or changes global agent settings.
 
 ```sh
+export RECEIPTS_ROOT="$HOME/Personal/oss/receipts" # explicit built checkout
 ./bin/agent-race list
 ./bin/agent-race smoke
 ./bin/agent-race run single-flight
 ```
 
-Receipts defaults to `$HOME/Personal/oss/receipts/dist/cli.js`. Set `RECEIPTS_PATH` to a different built repository root if needed; an empty optional value uses the default. The sibling is used read-only and is never copied or modified.
+Receipts has **no implicit home/sibling default**. Set `RECEIPTS_ROOT=/absolute/path/to/receipts` for commands that need its built `dist/cli.js`; `RECEIPTS_PATH` remains an explicit legacy alias. An explicit API root option takes precedence, then `RECEIPTS_ROOT`, then the alias. Missing configuration fails before a race starts. The sibling is used read-only and is never copied or modified. Viewing and unit tests need no receipts checkout.
 
 The original two-attempt cap was explicitly extended by two attempts. **All four authorised race attempts have now been used.** Further `run` calls are blocked; the counter is not reset. Capability smoke jobs are separate, small read/command checks, not races or demo data. Offline tests and viewing remain available without further model use.
 
@@ -134,9 +135,19 @@ V3 evidence, both critique passes, browser reports and limits are in [docs/v3-ve
 npm run gate
 ```
 
-This runs strict TypeScript (including diagnostic/build scripts), Biome, tests, the zero-model sandbox/toolchain check, production build, dependency licence checks and npm audit. The local receipts build is required for its integration test. Core tests cover normalization from captured streams, schemas, scrub rejection/escaping, timeline ordering, CLI input transport, readiness/budget guards, subprocess limits and all challenge acceptance contracts against bugs/reference fixes.
+This portable gate runs strict TypeScript (including diagnostic/build scripts), Biome, in-checkout unit tests, production build, dependency licence checks and npm audit. `npm test` never reads an external receipts checkout, even when `RECEIPTS_ROOT` points at a missing path. Its CLI adapter tests use an in-checkout transport fixture, without pretending to test receipts fingerprint semantics. The real lifecycle and zero-model sandbox/toolchain checks are separate, opt-in integration checks.
 
-The PR workflow targets a **self-hosted macOS runner labelled `agent-race`**, with Node and the built receipts sibling available (`RECEIPTS_PATH` may be a repository variable). No runner was provisioned and no hosted workflow was dispatched. CI configuration is distinct from local passing checks.
+Core tests cover normalization from captured streams, schemas, scrub rejection/escaping, timeline ordering, CLI input transport, readiness/budget guards, subprocess limits and all challenge acceptance contracts against bugs/reference fixes.
+
+```sh
+# Explicit SKIP when no root is configured; a configured missing/broken root FAILS.
+npm run test:integration
+RECEIPTS_ROOT=/absolute/path/to/receipts npm run test:integration
+```
+
+The real suite exercises UNBACKED → VERIFIED → STALE → FAILED against receipts. On macOS it also runs the Seatbelt toolchain boundary check; other platforms explicitly report that sandbox check skipped. There are no model calls. `npm run test:sandbox` remains a direct macOS check and requires the same explicit root. Integration scripts never turn a configured failure into a skip or pass.
+
+The PR workflow targets a **self-hosted macOS runner labelled `agent-race`**. Its portable gate runs first, then an integration step uses the optional `RECEIPTS_ROOT` repository variable and reports SKIP if it is absent. No runner was provisioned and no hosted workflow was dispatched. CI configuration is distinct from local passing checks.
 
 With the production preview running, the v2 browser matrix is:
 

@@ -17,12 +17,13 @@
     "preview": "vite preview --host 127.0.0.1 --port 4317 --strictPort",
     "race": "tsx src/harness/cli.ts",
     "typecheck": "tsc --noEmit",
-    "lint": "biome check src web tests scripts index.html package.json tsconfig.json biome.json vitest.config.ts",
-    "format": "biome check --write src web tests scripts index.html package.json tsconfig.json biome.json vitest.config.ts",
+    "lint": "biome check src web tests scripts index.html package.json tsconfig.json biome.json vitest.config.ts vitest.integration.config.ts",
+    "format": "biome check --write src web tests scripts index.html package.json tsconfig.json biome.json vitest.config.ts vitest.integration.config.ts",
     "test": "vitest run",
     "licenses": "node scripts/licenses.mjs",
-    "gate": "npm run typecheck && npm run lint && npm test && npm run test:sandbox && npm run build && npm run licenses && npm audit --audit-level=high",
-    "test:sandbox": "tsx scripts/check-sandbox.ts"
+    "gate": "npm run typecheck && npm run lint && npm test && npm run build && npm run licenses && npm audit --audit-level=high",
+    "test:sandbox": "tsx scripts/check-sandbox.ts",
+    "test:integration": "tsx scripts/check-receipts-integration.ts"
   },
   "dependencies": {
     "diff": "9.0.0",

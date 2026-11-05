@@ -9,9 +9,10 @@ import { agentLaunch } from "../src/harness/args";
 import { capture } from "../src/harness/capture";
 import { challengePrompt, loadChallenge } from "../src/harness/challenge";
 import { command } from "../src/harness/process";
-import { receiptsRoot } from "../src/harness/receipts";
+import { resolveReceiptsRoot } from "../src/harness/receipts";
 import { prepareSandbox } from "../src/harness/sandbox";
 
+const receiptsRoot = resolveReceiptsRoot();
 const temp = await mkdtemp("/private/tmp/agent-race-diagnose-");
 let requests = 0;
 const server = createServer((_req, res) => {

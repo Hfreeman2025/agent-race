@@ -3,18 +3,19 @@ import { homedir } from "node:os";
 import { dirname, resolve } from "node:path";
 import type { Agent } from "../core/schema";
 import { command } from "./process";
-import { receiptsRoot } from "./receipts";
+import { resolveReceiptsRoot } from "./receipts";
 
 const quote = (s: string) => JSON.stringify(s);
 /** macOS seatbelt is mandatory: agents cannot read the home tree or write outside their temp root. */
 export async function prepareSandbox(
   root: string,
-  options: { verifyAuth?: boolean; agent?: Agent } = {},
+  options: { verifyAuth?: boolean; agent?: Agent; receiptsRoot?: string } = {},
 ): Promise<{ profile: string; env: NodeJS.ProcessEnv }> {
   if (process.platform !== "darwin")
     throw new Error(
       "Real races currently require macOS sandbox-exec; viewer and offline tests are portable.",
     );
+  const receiptsRoot = resolveReceiptsRoot(options.receiptsRoot);
   const home = homedir();
   const claude = resolve(root, ".claude");
   const codex = resolve(root, "codex-home");

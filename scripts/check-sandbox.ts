@@ -2,9 +2,10 @@
 import { mkdir, mkdtemp, rm, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { command } from "../src/harness/process";
-import { checkClaims, receiptsCli } from "../src/harness/receipts";
+import { checkClaims, requireReceipts } from "../src/harness/receipts";
 import { prepareSandbox } from "../src/harness/sandbox";
 
+const { root: receiptsRoot, cli: receiptsCli } = await requireReceipts();
 const container = await mkdtemp("/private/tmp/agent-race-guard-");
 const root = resolve(container, "nested-lane");
 await mkdir(root);
@@ -22,7 +23,7 @@ try {
   await writeFile(resolve(repo, ".gitignore"), ".receipts/\n");
   await writeFile(resolve(repo, "sentinel"), "own fixture");
   await writeFile(resolve(sibling, "sentinel"), "sibling fixture");
-  const { profile, env } = await prepareSandbox(root, { verifyAuth: false });
+  const { profile, env } = await prepareSandbox(root, { verifyAuth: false, receiptsRoot });
   const exec = (args: string[]) =>
     command("/usr/bin/sandbox-exec", ["-f", profile, ...args], repo, undefined, env);
   const own = await exec(["/bin/cat", resolve(repo, "sentinel")]);
@@ -30,7 +31,7 @@ try {
   const write = await exec(["/bin/sh", "-c", "printf ok > local-proof"]);
   const git = await exec(["/bin/sh", "-c", "printf forbidden > .git/index"]);
   const toolchain = await exec([process.execPath, receiptsCli, "run", "--", "npm", "test"]);
-  const claims = await checkClaims(repo, "npm test passes.");
+  const claims = await checkClaims(repo, "npm test passes.", receiptsRoot);
   const expected = env.CLAUDE_CODE_TMPDIR === root;
   const result = {
     noModelCalls: true,

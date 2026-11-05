@@ -3,8 +3,9 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { resolve } from "node:path";
 import { RecordingSchema } from "../src/core/schema";
 import { command } from "../src/harness/process";
-import { receiptsCli } from "../src/harness/receipts";
+import { requireReceipts } from "../src/harness/receipts";
 
+const { cli: receiptsCli } = await requireReceipts();
 const root = resolve(".");
 const original = await readFile("public/recordings/demo.json");
 const recording = RecordingSchema.parse(JSON.parse(original.toString("utf8")));

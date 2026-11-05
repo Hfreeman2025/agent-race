@@ -11,5 +11,5 @@
     "allowImportingTsExtensions": true,
     "types": ["node", "vite/client"]
   },
-  "include": ["src", "web", "tests", "scripts", "vitest.config.ts"]
+  "include": ["src", "web", "tests", "scripts", "vitest.config.ts", "vitest.integration.config.ts"]
 }

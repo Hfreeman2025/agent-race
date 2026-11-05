@@ -9,11 +9,11 @@ import { agentLaunch } from "./args";
 import { capture } from "./capture";
 import { projectRoot } from "./challenge";
 import { command } from "./process";
-import { checkClaims, receiptsCli, receiptsRoot, requireReceipts } from "./receipts";
+import { checkClaims, requireReceipts } from "./receipts";
 import { prepareSandbox } from "./sandbox";
 /** Two tiny provider-backed capability jobs, never a race recording or demo. */
 export async function smokeAgents(): Promise<void> {
-  await requireReceipts();
+  const { root: receiptsRoot, cli: receiptsCli } = await requireReceipts();
   const temp = await mkdtemp("/private/tmp/agent-race-smoke-");
   const start = performance.now();
   const clock = () => Math.round(performance.now() - start);
@@ -46,8 +46,8 @@ export async function smokeAgents(): Promise<void> {
         );
         const git = await command("git", ["init", "--quiet"], cwd);
         if (git.code !== 0) throw new Error("Smoke git init failed");
-        const sandbox = await prepareSandbox(root, { agent });
-        return { agent, root, cwd, nonce, ...sandbox };
+        const sandbox = await prepareSandbox(root, { agent, receiptsRoot });
+        return { agent, root, cwd, nonce, receiptsRoot, ...sandbox };
       }),
     );
     const results = await Promise.all(
@@ -76,7 +76,7 @@ export async function smokeAgents(): Promise<void> {
         } catch (error) {
           if (!(error instanceof Error && "code" in error && error.code === "ENOENT")) throw error;
         }
-        const claims = await checkClaims(lane.cwd, "npm test passes.");
+        const claims = await checkClaims(lane.cwd, "npm test passes.", receiptsRoot);
         const readObserved = run.events.some((e) =>
           `${e.title}\n${e.detail ?? ""}`.includes("SMOKE.txt"),
         );

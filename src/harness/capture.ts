@@ -35,6 +35,7 @@ export async function capture(options: {
   input?: string;
   clock: () => number;
   timeoutMs?: number;
+  receiptsRoot?: string;
 }): Promise<{
   events: RaceEvent[];
   raw: { at: number; data: unknown }[];
@@ -70,7 +71,7 @@ export async function capture(options: {
     for (const draft of drafts) {
       const event = makeEvent(agent, at, sequence++, draft);
       if (event.kind === "message") {
-        const claims = await checkClaims(cwd, event.detail ?? event.title);
+        const claims = await checkClaims(cwd, event.detail ?? event.title, options.receiptsRoot);
         if (claims.length) {
           event.kind = "claim";
           event.claims = claims;

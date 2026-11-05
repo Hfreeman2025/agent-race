@@ -10,7 +10,7 @@ import { capture } from "./capture";
 import { challengePrompt, loadChallenge, projectRoot } from "./challenge";
 import { command } from "./process";
 import { requireSuccessfulSmoke } from "./readiness";
-import { checkClaims, receiptsCli, receiptsRoot, requireReceipts } from "./receipts";
+import { checkClaims, requireReceipts } from "./receipts";
 import { prepareSandbox } from "./sandbox";
 
 const agents: Agent[] = ["claude", "codex"];
@@ -45,7 +45,7 @@ export async function reserveAttempt(
 }
 export async function runRace(id: string): Promise<Recording> {
   const { challenge, directory } = await loadChallenge(id);
-  await requireReceipts();
+  const { root: receiptsRoot, cli: receiptsCli } = await requireReceipts();
   await requireSuccessfulSmoke();
   const temp = await mkdtemp("/private/tmp/agent-race-");
   try {
@@ -60,8 +60,8 @@ export async function runRace(id: string): Promise<Recording> {
         await writeFile(resolve(cwd, "verify"), verificationScript, { mode: 0o755 });
         const git = await command("git", ["init", "--quiet"], cwd);
         if (git.code !== 0) throw new Error(`git init failed: ${git.stderr}`);
-        const sandbox = await prepareSandbox(root, { agent });
-        return { agent, root, cwd, verificationScript, ...sandbox };
+        const sandbox = await prepareSandbox(root, { agent, receiptsRoot });
+        return { agent, root, cwd, verificationScript, receiptsRoot, ...sandbox };
       }),
     );
     const prompt = challengePrompt(challenge.contract);
@@ -89,7 +89,11 @@ export async function runRace(id: string): Promise<Recording> {
         const final = captured.events
           .filter((e) => e.kind === "claim" || e.kind === "message")
           .at(-1);
-        const claims = await checkClaims(lane.cwd, final?.detail ?? final?.title ?? "");
+        const claims = await checkClaims(
+          lane.cwd,
+          final?.detail ?? final?.title ?? "",
+          receiptsRoot,
+        );
         for (const file of ["src.mjs", "package.json", "visible.test.mjs", ".gitignore"])
           if ((await lstat(resolve(lane.cwd, file))).isSymbolicLink())
             throw new Error("Challenge symlink rejected before acceptance");

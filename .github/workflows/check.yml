@@ -9,12 +9,15 @@ permissions:
 jobs:
   quality:
     # Local receipts is intentionally not fetched from an invented remote.
-    # Provision a macOS runner with Node >=22.12 and a built receipts checkout.
+    # Provision Node >=22.12; an optional built receipts checkout enables integration.
     runs-on: [self-hosted, macOS, agent-race]
     timeout-minutes: 10
     env:
+      RECEIPTS_ROOT: ${{ vars.RECEIPTS_ROOT }}
       RECEIPTS_PATH: ${{ vars.RECEIPTS_PATH }}
     steps:
       - uses: actions/checkout@v4
       - run: npm ci --ignore-scripts
       - run: npm run gate
+      # Explicitly reports SKIP if this runner has no configured receipts checkout.
+      - run: npm run test:integration
