@@ -134,6 +134,7 @@ strong {
   inline-size: 124px;
 }
 #app :where(.record-label) {
+  white-space: nowrap;
   inline-size: 200px;
   flex-shrink: 0;
 }
@@ -146,7 +147,7 @@ strong {
   text-align: right;
 }
 #app :where(.tower-row > b) {
-  inline-size: 7ch;
+  inline-size: 68px;
   flex-shrink: 0;
   text-align: right;
 }
@@ -165,6 +166,30 @@ strong {
   }
   #app :where(.lane-head > span) {
     inline-size: 126px;
+  }
+  /* Fallback metrics vary across OSes; reserve the replay's compact text slots. */
+  #app :where(.tower-row > b) {
+    inline-size: 47px;
+  }
+  #app :where(.tower-row > div) {
+    flex: 1;
+  }
+  #app :where(.tower-row > div > span) {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  #app :where(.position) {
+    flex-shrink: 0;
+  }
+  #app :where(#finish) {
+    inline-size: 60px;
+    flex-shrink: 0;
+  }
+  #app :where(.gap > span) {
+    flex: 0 0 90px;
+    white-space: nowrap;
+    overflow: hidden;
   }
 }
 #app :where(.view-switch button) {

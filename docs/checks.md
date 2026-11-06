@@ -8,7 +8,7 @@ The default recording is real archived CLI evidence. Browser interaction tests u
 
 Unit tests cover stream decoding/normalisation, strict schemas, scrub rejection and escaping, process limits, CLI input transport, readiness/budget guards, challenge acceptance against known bugs/fixes, replay rules, patch provenance, lexical routing and DSSE validation. The receipts adapter uses an in-checkout stub. The real cross-repository lifecycle and macOS sandbox remain explicit opt-in checks; an unconfigured root prints SKIP and its reason, while a configured missing root fails.
 
-GitHub Actions is configured for hosted Ubuntu runners with Node 22. The quality job gates typecheck, lint, unit tests, build, licences and audit. A separate job installs pinned Playwright engines and runs the serial browser suite against a local preview. Provider/model calls and macOS recording are explicitly excluded. Hosted workflow execution has not been observed locally and must be assessed from its actual GitHub run.
+GitHub Actions is configured for hosted Ubuntu runners with Node 22. The quality job gates typecheck, lint, unit tests, build, licences and audit. A separate job installs pinned Playwright engines and runs the serial browser suite against a local preview. Provider/model calls and macOS recording are explicitly excluded. The [hosted workflow results](https://github.com/Hfreeman2025/agent-race/actions/workflows/check.yml) are separate from the local measurements below. The first Ubuntu run caught small fallback-font shifts that macOS did not expose: the recording label wrapped, and compact replay text changed width. Those slots now reserve their layout through font swap; the zero-CLS assertion remains enforced.
 
 ## Browser method
 
