@@ -8,6 +8,7 @@ import { scrub } from "../src/core/scrub";
 import { agentLaunch } from "../src/harness/args";
 import { capture } from "../src/harness/capture";
 import { challengePrompt, loadChallenge } from "../src/harness/challenge";
+import { privateTerms } from "../src/harness/privacy";
 import { command } from "../src/harness/process";
 import { resolveReceiptsRoot } from "../src/harness/receipts";
 import { prepareSandbox } from "../src/harness/sandbox";
@@ -93,13 +94,18 @@ try {
     argv,
     stdin,
   };
-  const cleaned = scrub(JSON.stringify(report), {
-    [cwd]: "<repo>",
-    [root]: "<sandbox>",
-    [receiptsRoot]: "<receipts>",
-  });
+  const cleaned = scrub(
+    JSON.stringify(report),
+    {
+      [cwd]: "<repo>",
+      [root]: "<sandbox>",
+      [receiptsRoot]: "<receipts>",
+    },
+    privateTerms(),
+  );
   if (cleaned.findings.length) throw new Error("Diagnostic privacy check failed");
-  await writeFile("shots/codex-startup-diagnostic.json", `${cleaned.text}\n`);
+  await mkdir(".cache", { recursive: true });
+  await writeFile(".cache/codex-startup-diagnostic.json", `${cleaned.text}\n`);
   console.log({
     argvExit: argv.code,
     argvSignal: argv.signal,

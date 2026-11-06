@@ -1,11 +1,9 @@
 import { readdir, readFile } from "node:fs/promises";
-import { createRequire } from "node:module";
+import * as pw from "playwright";
 import { silentBrowser } from "./silent.mjs";
 
-const require = createRequire("<local path>");
-const pw = require("playwright");
 const pass = process.argv[2] ?? "pass1";
-const dir = `${process.env.RACE_SHOT_ROOT ?? "shots/v2"}/${pass}`;
+const dir = `${process.env.RACE_SHOT_ROOT ?? ".cache/browser/v2"}/${pass}`;
 const browser = await silentBrowser(pw, "chromium");
 try {
   for (const size of ["desktop", "mobile"]) {

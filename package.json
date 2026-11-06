@@ -17,13 +17,16 @@
     "preview": "vite preview --host 127.0.0.1 --port 4317 --strictPort",
     "race": "tsx src/harness/cli.ts",
     "typecheck": "tsc --noEmit",
-    "lint": "biome check src web tests scripts index.html package.json tsconfig.json biome.json vitest.config.ts vitest.integration.config.ts",
-    "format": "biome check --write src web tests scripts index.html package.json tsconfig.json biome.json vitest.config.ts vitest.integration.config.ts",
+    "lint": "biome check src web tests scripts index.html package.json tsconfig.json biome.json vitest.config.ts vitest.integration.config.ts vite.config.ts vitest.preview.config.ts",
+    "format": "biome check --write src web tests scripts index.html package.json tsconfig.json biome.json vitest.config.ts vitest.integration.config.ts vite.config.ts vitest.preview.config.ts",
     "test": "vitest run",
     "licenses": "node scripts/licenses.mjs",
-    "gate": "npm run typecheck && npm run lint && npm test && npm run build && npm run licenses && npm audit --audit-level=high",
+    "gate": "npm run typecheck && npm run lint && npm test && npm run build && npm run test:preview && npm run licenses && npm audit --audit-level=high",
     "test:sandbox": "tsx scripts/check-sandbox.ts",
-    "test:integration": "tsx scripts/check-receipts-integration.ts"
+    "test:integration": "tsx scripts/check-receipts-integration.ts",
+    "test:browser": "node scripts/check-browser.mjs",
+    "browser:install": "PLAYWRIGHT_BROWSERS_PATH=.cache/ms-playwright playwright install chromium webkit firefox",
+    "test:preview": "vitest run --config vitest.preview.config.ts"
   },
   "dependencies": {
     "diff": "9.0.0",
@@ -32,6 +35,7 @@
   "devDependencies": {
     "@biomejs/biome": "2.6.4",
     "@types/node": "22.20.5",
+    "playwright": "1.63.0",
     "tsx": "4.23.15",
     "typescript": "7.0.2",
     "vite": "7.3.7",
@@ -39,5 +43,9 @@
   },
   "overrides": {
     "vite": "7.3.7"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Hfreeman2025/agent-race"
   }
 }

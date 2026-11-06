@@ -1,10 +1,8 @@
 import assert from "node:assert/strict";
-import { createRequire } from "node:module";
+import * as pw from "playwright";
 import { archiveRace } from "./archive-race.mjs";
 import { silentBrowser } from "./silent.mjs";
 
-const require = createRequire("<local path>");
-const pw = require("playwright");
 const browser = await silentBrowser(pw, "chromium");
 try {
   const page = await browser.newPage({ reducedMotion: "reduce" });

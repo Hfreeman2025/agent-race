@@ -1,3 +1,5 @@
+import { execFileSync } from "node:child_process";
+
 // Agent Race has no audio. These guards also forbid opening a device if that changes.
 export function deviceFreeAudio() {
   class DisabledAudioContext {
@@ -7,12 +9,10 @@ export function deviceFreeAudio() {
   }
   window.AudioContext = DisabledAudioContext;
   window.webkitAudioContext = DisabledAudioContext;
-  const play = HTMLMediaElement.prototype.play;
   HTMLMediaElement.prototype.play = function () {
     this.muted = true;
     return Promise.resolve();
   };
-  void play;
   navigator.mediaDevices &&
     Object.defineProperty(navigator.mediaDevices, "getUserMedia", {
       value: () =>
@@ -20,16 +20,9 @@ export function deviceFreeAudio() {
     });
 }
 export async function silentBrowser(playwright, engine) {
-  const executablePath =
-    engine === "chromium"
-      ? playwright.chromium.executablePath()
-      : new URL(
-          `../.race/browsers/${playwright[engine].executablePath().match(/(?:webkit|firefox)-[^/]+\/.+$/u)?.[0]}`,
-          import.meta.url,
-        ).pathname;
+  assertBrowserSlot();
   const browser = await playwright[engine].launch({
     headless: true,
-    executablePath,
     args: engine === "chromium" ? ["--mute-audio"] : [],
     ...(engine === "firefox"
       ? { firefoxUserPrefs: { "media.volume_scale": "0.0", "media.autoplay.default": 5 } }
@@ -42,4 +35,23 @@ export async function silentBrowser(playwright, engine) {
     return context;
   };
   return browser;
+}
+
+export function assertBrowserSlot() {
+  const active = execFileSync("ps", ["-axo", "pid=,command="], { encoding: "utf8" })
+    .split("\n")
+    .filter((line) => {
+      const command = line.trim().replace(/^\d+\s+/u, "");
+      return (
+        command.startsWith("/") &&
+        !command.includes(" --type=") &&
+        /Chrome for Testing --.*--remote-debugging-pipe|\/(?:headless_shell|chrome-headless-shell|chrome) .*--remote-debugging-pipe|\/firefox .*juggler|\/Playwright .*--inspector-pipe|\/MiniBrowser/u.test(
+          command,
+        )
+      );
+    });
+  if (active.length)
+    throw new Error(
+      `Browser slot occupied by ${active.map((line) => line.trim().split(/\s/u)[0]).join(", ")}; no browser launched.`,
+    );
 }

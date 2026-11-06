@@ -1,0 +1,270 @@
+/* Flight recorder: observed calls on a shared time axis, inferred provenance in light. */
+.view-switch {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 24px;
+}
+.view-switch button {
+  border: 0;
+  padding: 13px 20px;
+  font-size: 15px;
+  border-bottom: 3px solid transparent;
+}
+.view-switch button[aria-pressed="true"] {
+  border-bottom-color: var(--yellow);
+  color: var(--yellow);
+}
+.view-switch > span {
+  margin-left: auto;
+  color: var(--muted);
+  font-size: 11px;
+  letter-spacing: 0.05em;
+}
+#flight :where(.flight-heading) {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  padding-bottom: 18px;
+}
+#flight :where(.flight-kicker) {
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: var(--yellow);
+}
+#flight :where(.flight-kicker span) {
+  color: var(--muted);
+}
+#flight :where(.flight-heading h2) {
+  font: 600 42px / 0.98 var(--display);
+  letter-spacing: -0.01em;
+  margin-top: 10px;
+}
+#flight :where(.flight-clock) {
+  text-align: right;
+}
+#flight :where(.flight-clock > span) {
+  font: 600 60px / 0.95 var(--display);
+  font-variant-numeric: tabular-nums;
+}
+#flight :where(.flight-clock > span span) {
+  font-size: 28px;
+  color: var(--muted);
+  margin-left: 5px;
+}
+#flight :where(.flight-clock p) {
+  font-size: 10px;
+  margin-top: 8px;
+  color: var(--muted);
+  letter-spacing: 0.06em;
+}
+#flight :where(.trace-bar) {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 11px 16px;
+  background: #242b1e;
+  border-top: 1px solid var(--line);
+}
+#flight :where(.trace-bar p) {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  font-size: 12px;
+}
+#flight :where(.trace-bar p > span) {
+  color: var(--muted);
+}
+#flight :where(.trace-bar strong) {
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+#flight :where(.trace-bar button) {
+  padding: 6px 10px;
+  white-space: nowrap;
+  font-size: 12px;
+}
+#flight :where(.trace-scroll) {
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-top: 0;
+}
+#flight :where(.trace-graph) {
+  height: 310px;
+  position: relative;
+  min-width: 720px;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent 0,
+    transparent calc(12.5% - 1px),
+    #2c3327 calc(12.5% - 1px),
+    #2c3327 12.5%
+  );
+}
+#flight :where(.trace-ruler) {
+  height: 24px;
+  position: absolute;
+  inset: 0 0 auto;
+  color: var(--muted);
+  font-size: 10px;
+}
+#flight :where(.trace-ruler span) {
+  position: absolute;
+  top: 8px;
+}
+#flight :where(.trace-lane) {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 145px;
+  top: 20px;
+  border-bottom: 1px solid var(--line);
+  pointer-events: none;
+}
+#flight :where(.trace-lane.codex) {
+  top: 165px;
+  border-bottom: 0;
+}
+#flight :where(.trace-lane-label) {
+  position: absolute;
+  top: 10px;
+  left: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+#flight :where(.trace-lane-label strong) {
+  font: 600 23px / 1 var(--display);
+  color: var(--claude);
+}
+#flight :where(.trace-lane.codex strong) {
+  color: var(--codex);
+}
+#flight :where(.trace-lane-label span) {
+  font-size: 10px;
+  color: var(--muted);
+}
+#flight :where(#trace-edges) {
+  position: absolute;
+  width: 100%;
+  height: 310px;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+#flight :where(#trace-edges path) {
+  fill: none;
+  stroke: #616b54;
+  stroke-width: 1.3;
+  opacity: 0.08;
+  transition:
+    stroke 0.2s,
+    opacity 0.2s;
+  vector-effect: non-scaling-stroke;
+}
+#flight :where(#trace-edges path.all) {
+  opacity: 0.55;
+}
+#flight :where(#trace-edges path.lit) {
+  stroke: var(--yellow);
+  opacity: 1;
+  stroke-width: 2.5;
+  stroke-dasharray: 7 4;
+  animation: trace-flow 1.6s linear infinite;
+}
+@keyframes trace-flow {
+  to {
+    stroke-dashoffset: -22;
+  }
+}
+#flight :where(.trace-node) {
+  position: absolute;
+  transform: translateX(-50%);
+  padding: 5px 7px;
+  background: #151b12;
+  border-color: #63715a;
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  height: 27px;
+  min-width: 54px;
+  font-size: 9px;
+  color: #b0b9aa;
+  z-index: 1;
+}
+#flight :where(.trace-node b) {
+  font: 600 15px / 1 var(--display);
+}
+#flight :where(.trace-node.claude) {
+  border-top: 2px solid #8b6145;
+}
+#flight :where(.trace-node.codex) {
+  border-top: 2px solid #507f7f;
+}
+#flight :where(.trace-node.failed) {
+  border-color: #d78b57;
+}
+#flight :where(.trace-node.lit) {
+  color: var(--yellow);
+  border-color: var(--yellow);
+  background: #2a321a;
+}
+#flight :where(.trace-node.selected) {
+  background: var(--yellow);
+  color: #111410;
+  z-index: 2;
+}
+#flight :where(.trace-node:hover:enabled) {
+  background: #3d472e;
+}
+#flight :where(.trace-node.selected:hover:enabled) {
+  background: var(--yellow);
+}
+#flight :where(.node-tip) {
+  display: none;
+  position: absolute;
+  left: 50%;
+  bottom: 34px;
+  transform: translateX(-50%);
+  padding: 7px 9px;
+  font: 500 11px / 1.3 var(--reading);
+  background: #edf2e4;
+  color: #111410;
+  border: 1px solid #111410;
+  white-space: nowrap;
+  pointer-events: none;
+}
+#flight :where(.trace-node:focus-visible .node-tip),
+#flight :where(.trace-node:hover .node-tip) {
+  display: block;
+}
+#flight :where(.trace-caption) {
+  display: flex;
+  gap: 22px;
+  color: var(--muted);
+  padding: 10px 0 13px;
+  font-size: 11px;
+}
+#flight :where(.trace-caption span) {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+#flight :where(.trace-caption span:last-child) {
+  margin-left: auto;
+}
+#flight :where(.trace-key) {
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--muted);
+  display: inline-block;
+}
+#flight :where(.trace-key.connection) {
+  height: 2px;
+  width: 22px;
+  border: 0;
+  background: var(--yellow);
+}

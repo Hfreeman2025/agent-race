@@ -1,13 +1,11 @@
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { createRequire } from "node:module";
+import * as pw from "playwright";
 import { silentBrowser } from "./silent.mjs";
 
-const require = createRequire("<local path>");
-const pw = require("playwright");
 const base = process.env.RACE_PREVIEW_URL ?? "http://127.0.0.1:4317";
 const pass = process.env.RACE_SHOT_PASS ?? "pass2";
-const out = `${process.env.RACE_SHOT_ROOT ?? "shots/v3"}/${pass}`;
+const out = `${process.env.RACE_SHOT_ROOT ?? ".cache/browser/v3"}/${pass}`;
 await mkdir(out, { recursive: true });
 const report = {
   pass,

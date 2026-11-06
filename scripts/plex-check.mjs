@@ -1,35 +1,13 @@
 import assert from "node:assert/strict";
-import { execFileSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
-import { createRequire } from "node:module";
+import * as pw from "playwright";
 import { silentBrowser } from "./silent.mjs";
 
-const require = createRequire("<local path>");
-const pw = require("playwright");
-const out = `shots/plex/${process.env.PLEX_PASS ?? "after"}`;
+const out = `.cache/browser/plex/${process.env.PLEX_PASS ?? "after"}`;
 await mkdir(out, { recursive: true });
 const report = { checks: [], failures: [], console: [], rows: [] };
 const check = (name, good) => (good ? report.checks : report.failures).push(name);
-function assertBrowserSlot() {
-  const active = execFileSync("ps", ["-axo", "pid=,command="], { encoding: "utf8" })
-    .split("\n")
-    .filter((line) => {
-      const command = line.trim().replace(/^\d+\s+/u, "");
-      return (
-        command.startsWith("/") &&
-        !command.includes(" --type=") &&
-        /Chrome for Testing --.*--remote-debugging-pipe|\/headless_shell .*--remote-debugging-pipe|\/firefox .*juggler|\/Playwright .*--inspector-pipe|\/MiniBrowser/u.test(
-          command,
-        )
-      );
-    });
-  if (active.length)
-    throw new Error(
-      `Browser slot occupied by ${active.map((line) => line.trim().split(/\s/u)[0]).join(", ")}; no browser launched.`,
-    );
-}
 for (const engine of (process.env.PLEX_BROWSERS ?? "chromium,webkit,firefox").split(",")) {
-  assertBrowserSlot();
   const browser = await silentBrowser(pw, engine);
   try {
     for (const [size, width, height] of [

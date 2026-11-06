@@ -1,4 +1,4 @@
-name: check
+name: Checks
 on:
   pull_request:
   push:
@@ -8,16 +8,50 @@ permissions:
   contents: read
 jobs:
   quality:
-    # Local receipts is intentionally not fetched from an invented remote.
-    # Provision Node >=22.12; an optional built receipts checkout enables integration.
-    runs-on: [self-hosted, macOS, agent-race]
+    runs-on: ubuntu-24.04
     timeout-minutes: 10
-    env:
-      RECEIPTS_ROOT: ${{ vars.RECEIPTS_ROOT }}
-      RECEIPTS_PATH: ${{ vars.RECEIPTS_PATH }}
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
       - run: npm ci --ignore-scripts
       - run: npm run gate
-      # Explicitly reports SKIP if this runner has no configured receipts checkout.
-      - run: npm run test:integration
+      - name: Report local integration coverage
+        run: |
+          npm run test:integration
+          echo 'SKIP real-agent recording and Seatbelt checks: these require authenticated local CLIs and macOS; no model calls run in CI.'
+  browser:
+    runs-on: ubuntu-24.04
+    needs: quality
+    timeout-minutes: 15
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: .cache/ms-playwright
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: package-lock.json
+      - run: npm ci --ignore-scripts
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium webkit firefox
+      - name: Check viewer in serial browsers
+        run: |
+          npm run preview > .cache/preview.log 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid"' EXIT
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4317/ > /dev/null; then break; fi
+            sleep 1
+          done
+          curl --fail --silent http://127.0.0.1:4317/ > /dev/null
+          npm run test:browser
+      - uses: actions/upload-artifact@v4
+        if: failure()
+        with:
+          name: browser-checks
+          path: .cache/browser

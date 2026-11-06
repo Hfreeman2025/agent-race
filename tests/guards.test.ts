@@ -65,13 +65,15 @@ it("detects sensitive values inside JSON-escaped captured output", () => {
   expect(
     scrub(JSON.stringify({ line: '{"api_key":"opaqueCredential123456"}' })).findings,
   ).toContain("secret assignment");
-  expect(scrub(JSON.stringify({ line: ["Simply", "Sustainable"].join("\n") })).findings).toContain(
-    "company name",
-  );
+  expect(
+    scrub(JSON.stringify({ line: ["Example", "Organisation"].join("\n") }), {}, [
+      "Example Organisation",
+    ]).findings,
+  ).toContain("private term");
   expect(scrub('"\\u002fUsers/test/private.txt"').findings).toContain("home directory");
 });
 
-it("the authorised extension permits two more attempts and preserves the original count", async () => {
+it("enforces the four-attempt cap while preserving previously recorded usage", async () => {
   await mkdir(".race", { recursive: true });
   const dir = await mkdtemp(resolve(".race/budget-test-"));
   try {
@@ -85,4 +87,13 @@ it("the authorised extension permits two more attempts and preserves the origina
   } finally {
     await rm(dir, { recursive: true, force: true });
   }
+});
+
+it("private denylist terms are literal, separator-tolerant and explicitly configured", () => {
+  expect(scrub("Example_Organisation", {}, ["Example Organisation"]).findings).toContain(
+    "private term",
+  );
+  expect(scrub("Example Organisation").findings).toEqual([]);
+  expect(scrub("A+B", {}, ["A+B", " "]).findings).toContain("private term");
+  expect(scrub("AAAB", {}, ["A+B"]).findings).toEqual([]);
 });

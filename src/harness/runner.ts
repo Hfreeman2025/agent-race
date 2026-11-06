@@ -8,13 +8,14 @@ import { mergeTimeline } from "../core/timeline";
 import { agentLaunch } from "./args";
 import { capture } from "./capture";
 import { challengePrompt, loadChallenge, projectRoot } from "./challenge";
+import { privateTerms } from "./privacy";
 import { command } from "./process";
 import { requireSuccessfulSmoke } from "./readiness";
 import { checkClaims, requireReceipts } from "./receipts";
 import { prepareSandbox } from "./sandbox";
 
 const agents: Agent[] = ["claude", "codex"];
-export const RACE_LIMIT = 4; // Two initial attempts, plus two explicitly authorised on 1 November 2026.
+export const RACE_LIMIT = 4; // Persisted per checkout; rejected saves count against the limit.
 const attemptSchema = z.object({ started: z.number().int().min(0).max(RACE_LIMIT) }).strict();
 export async function reserveAttempt(
   dir = resolve(projectRoot, ".race"),
@@ -181,7 +182,7 @@ export async function runRace(id: string): Promise<Recording> {
       paths[lane.cwd] = "<repo>";
       paths[lane.root] = "<sandbox>";
     }
-    const clean = scrub(JSON.stringify({ recording: base, raw }), paths);
+    const clean = scrub(JSON.stringify({ recording: base, raw }), paths, privateTerms());
     console.log(
       `Scrub: ${clean.pathsRedacted} known paths redacted; ${clean.findings.length} finding(s).`,
     );

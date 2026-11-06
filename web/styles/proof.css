@@ -1,0 +1,116 @@
+#flight :where(.proof-controls) {
+  display: flex;
+  gap: 0;
+  margin-bottom: 16px;
+}
+#flight :where(.proof-controls button[aria-pressed="true"]) {
+  color: var(--yellow);
+  border-color: var(--yellow);
+  background: #2a321a;
+}
+#flight :where(#proof-state) {
+  border-left: 3px solid #9ca58d;
+  padding: 10px 14px;
+  min-height: 115px;
+}
+#flight :where(#proof-state > span) {
+  font-size: 10px;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+}
+#flight :where(#proof-state > strong) {
+  display: block;
+  font: 600 33px / 1.1 var(--display);
+  margin: 5px 0 8px;
+}
+#flight :where(#proof-state[data-state="verified"]) {
+  border-color: var(--yellow);
+}
+#flight :where(#proof-state[data-state="verified"] > strong) {
+  color: var(--yellow);
+}
+#flight :where(#proof-state[data-state="invalid"]) {
+  border-color: #ff956c;
+  background: #2b1d17;
+}
+#flight :where(#proof-state[data-state="invalid"] > strong) {
+  color: #ffad79;
+}
+#flight :where(.proof-actions) {
+  display: flex;
+  gap: 8px;
+  margin: 16px 0 12px;
+}
+#flight :where(#proof-byte) {
+  font-size: 11px;
+  line-height: 1.7;
+  min-height: 40px;
+}
+#flight :where(.proof-provenance) {
+  color: var(--yellow);
+  font-size: 13px;
+  font-weight: 600;
+  margin: 16px 0;
+}
+#flight :where(#proof-facts dl) {
+  display: grid;
+  grid-template-columns: 130px 1fr;
+  gap: 10px;
+  font-size: 11px;
+  line-height: 1.6;
+}
+#flight :where(#proof-facts dt) {
+  color: var(--muted);
+}
+#flight :where(#proof-facts dd) {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+#flight :where(#proof-facts code) {
+  font: 10px / 1.7 var(--data);
+}
+#flight :where(#proof-facts details) {
+  margin: 18px 0;
+  font-size: 12px;
+  line-height: 1.6;
+}
+#flight :where(#proof-facts details p) {
+  font-size: 11px;
+  margin-top: 8px;
+}
+#flight :where(#proof-facts ul) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3px 20px;
+  padding-left: 16px;
+  font-size: 11px;
+  color: var(--muted);
+}
+#flight :where(.proof-trust) {
+  font-size: 11px;
+  margin: 14px 0;
+  overflow-wrap: anywhere;
+}
+#flight :where(.proof-trust code) {
+  font: 10px / 1.6 var(--data);
+}
+#flight :where(.proof-downloads) {
+  margin-top: 18px;
+  font-size: 12px;
+  line-height: 1.7;
+}
+#flight :where(.proof-downloads pre) {
+  overflow-wrap: anywhere;
+  white-space: pre-wrap;
+  font: 10px / 1.7 var(--data);
+  padding: 12px;
+  border: 1px solid var(--line);
+}
+@media (max-width: 760px) {
+  #flight :where(#proof-body) {
+    padding: 10px 12px;
+  }
+  #flight :where(#proof-facts dl) {
+    grid-template-columns: 100px 1fr;
+  }
+}

@@ -8,6 +8,7 @@ import { scrub } from "../core/scrub";
 import { agentLaunch } from "./args";
 import { capture } from "./capture";
 import { projectRoot } from "./challenge";
+import { privateTerms } from "./privacy";
 import { command } from "./process";
 import { checkClaims, requireReceipts } from "./receipts";
 import { prepareSandbox } from "./sandbox";
@@ -95,13 +96,15 @@ export async function smokeAgents(): Promise<void> {
         results,
       }),
       paths,
+      privateTerms(),
     );
     if (cleaned.findings.length)
       throw new Error(`Smoke save blocked: ${cleaned.findings.join(", ")}`);
-    await writeFile(resolve(projectRoot, "shots/agent-smoke.json"), `${cleaned.text}\n`);
+    await mkdir(resolve(projectRoot, ".cache"), { recursive: true });
+    await writeFile(resolve(projectRoot, ".cache/agent-smoke.json"), `${cleaned.text}\n`);
     if (results.some((r) => !r.passed))
       throw new Error(
-        "Agent smoke failed. No race permitted; see scrubbed shots/agent-smoke.json.",
+        "Agent smoke failed. No race permitted; see scrubbed .cache/agent-smoke.json.",
       );
     console.log(
       `Both smoke checks passed; ${cleaned.pathsRedacted} path references redacted; zero scrub findings.`,

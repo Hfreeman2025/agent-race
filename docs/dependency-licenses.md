@@ -1,6 +1,6 @@
 # Dependency licences
 
-Generated from package-lock.json by npm run licenses. All 130 locked dependency packages (including optional platform binaries) satisfy the MIT / Apache-2.0 / BSD / ISC allowlist. Local receipts is MIT and is used read-only from its own built repository. IBM Plex Sans, Mono and Sans Condensed are bundled under SIL OFL-1.1; the font and full notice hashes are checked separately. See [DEPENDENCIES.md](../DEPENDENCIES.md) for the pinned source and attribution. No external font requests are made.
+Generated from package-lock.json by npm run licenses. All 132 locked dependency packages (including optional platform binaries) satisfy the MIT / Apache-2.0 / BSD / ISC allowlist. Local receipts is MIT and is used read-only from its own built repository. IBM Plex Sans, Mono and Sans Condensed are bundled under SIL OFL-1.1; the font and full notice hashes are checked separately. See [DEPENDENCIES.md](../DEPENDENCIES.md) for the pinned source and attribution. No external font requests are made.
 
 | Package | Version | SPDX licence |
 | --- | --- | --- |
@@ -117,6 +117,8 @@ Generated from package-lock.json by npm run licenses. All 130 locked dependency 
 | pathe | 2.0.3 | MIT |
 | picocolors | 1.1.1 | ISC |
 | picomatch | 4.0.7 | MIT |
+| playwright | 1.63.0 | Apache-2.0 |
+| playwright-core | 1.63.0 | Apache-2.0 |
 | postcss | 8.5.32 | MIT |
 | rollup | 4.67.4 | MIT |
 | siginfo | 2.0.0 | ISC |

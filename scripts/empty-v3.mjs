@@ -1,12 +1,10 @@
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { createRequire } from "node:module";
+import * as pw from "playwright";
 import { silentBrowser } from "./silent.mjs";
 
-const require = createRequire("<local path>");
-const pw = require("playwright");
 const recording = JSON.parse(await readFile("public/recordings/demo.json", "utf8"));
-const out = "shots/v3/empty-final";
+const out = ".cache/browser/v3/empty-final";
 await mkdir(out, { recursive: true });
 const checks = [];
 for (const engine of ["chromium", "webkit", "firefox"]) {

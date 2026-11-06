@@ -39,7 +39,7 @@ export async function prepareSandbox(
   );
   const probe = await command(
     "/usr/bin/sandbox-exec",
-    ["-f", profile, "/bin/cat", new URL("../../SPEC.md", import.meta.url).pathname],
+    ["-f", profile, "/bin/cat", new URL("../../src/core/schema.ts", import.meta.url).pathname],
     root,
   );
   if (!/Operation not permitted/.test(probe.stderr))

@@ -51,3 +51,19 @@ weights/
 id_rsa
 id_ed25519
 !public/attestations/trusted-public.pem
+
+# Generated QA captures stay local; curated reader-facing images live in docs/images.
+shots/
+screenshots/
+blob-report/
+.npm/
+*.tsbuildinfo
+
+# Local agent directions and scratch material are not distribution files.
+/AGENTS.md
+/CLAUDE.md
+/SPEC.md
+/BRIEF.md
+/V2.md
+/V3.md
+/scratch/

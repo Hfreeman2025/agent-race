@@ -1,17 +1,15 @@
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { createRequire } from "node:module";
+import * as playwright from "playwright";
 import { archiveRace } from "./archive-race.mjs";
 import { silentBrowser } from "./silent.mjs";
 
-const require = createRequire("<local path>");
-const playwright = require("playwright");
 const base = process.env.RACE_PREVIEW_URL ?? "http://127.0.0.1:4317?view=replay";
 const pass = process.env.RACE_SHOT_PASS ?? "latest";
 const engines = (process.env.RACE_BROWSERS ?? "chromium").split(",");
 const original = await readFile("public/recordings/demo.json", "utf8");
 const recording = JSON.parse(original);
-const out = `${process.env.RACE_SHOT_ROOT ?? "shots/v2"}/${pass}`;
+const out = `${process.env.RACE_SHOT_ROOT ?? ".cache/browser/v2"}/${pass}`;
 await mkdir(out, { recursive: true });
 const report = { pass, checks: [], failures: [], console: [], metrics: {}, states: [] };
 const check = (name, value) => {

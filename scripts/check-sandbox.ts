@@ -45,7 +45,8 @@ try {
   };
   console.log(result);
   if (Object.values(result).some((x) => x !== true)) throw new Error("Sandbox boundary regression");
-  await writeFile("shots/sandbox-check.json", `${JSON.stringify(result, null, 2)}\n`);
+  await mkdir(".cache", { recursive: true });
+  await writeFile(".cache/sandbox-check.json", `${JSON.stringify(result, null, 2)}\n`);
 } finally {
   await Promise.all([
     rm(container, { recursive: true, force: true }),

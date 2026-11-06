@@ -1,10 +1,9 @@
 import assert from "node:assert/strict";
-import { writeFile } from "node:fs/promises";
-import { createRequire } from "node:module";
+import { mkdir, writeFile } from "node:fs/promises";
+import * as pw from "playwright";
 import { silentBrowser } from "./silent.mjs";
 
-const require = createRequire("<local path>");
-const pw = require("playwright");
+await mkdir(".cache/browser/v3", { recursive: true });
 const report = [];
 for (const engine of ["chromium", "webkit", "firefox"]) {
   const browser = await silentBrowser(pw, engine);
@@ -16,7 +15,7 @@ for (const engine of ["chromium", "webkit", "firefox"]) {
     });
     await page.goto("http://127.0.0.1:4317");
     await page.waitForSelector("[data-node]");
-    await page.screenshot({ path: `shots/v3/csp-${engine}.png` });
+    await page.screenshot({ path: `.cache/browser/v3/csp-${engine}.png` });
     const productionMessages = [...messages];
     assert.deepEqual(
       productionMessages,
@@ -60,7 +59,7 @@ for (const engine of ["chromium", "webkit", "firefox"]) {
     await browser.close();
   }
 }
-await writeFile("shots/v3/csp-check.json", `${JSON.stringify(report, null, 2)}\n`);
+await writeFile(".cache/browser/v3/csp-check.json", `${JSON.stringify(report, null, 2)}\n`);
 console.log(
   "PASS: all three engines quiet in production; arbitrary inline scripts and CSS blocked.",
 );

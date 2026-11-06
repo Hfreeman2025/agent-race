@@ -36,7 +36,7 @@ export function validateSmokeProof(value: unknown, now = Date.now()): void {
 export async function requireSuccessfulSmoke(): Promise<void> {
   try {
     const raw: unknown = JSON.parse(
-      await readFile(resolve(projectRoot, "shots/agent-smoke.json"), "utf8"),
+      await readFile(resolve(projectRoot, ".cache/agent-smoke.json"), "utf8"),
     );
     validateSmokeProof(raw);
   } catch (error) {

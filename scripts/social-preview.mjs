@@ -1,9 +1,8 @@
-import { readFile, writeFile } from "node:fs/promises";
-import { createRequire } from "node:module";
+import { mkdir, readFile, writeFile } from "node:fs/promises";
+import * as pw from "playwright";
 import { silentBrowser } from "./silent.mjs";
 
-const require = createRequire("<local path>");
-const pw = require("playwright");
+await mkdir(".cache/browser/plex", { recursive: true });
 const displayFont = await readFile("public/fonts/ibm-plex-sans-condensed-latin-600-normal.woff2");
 const browser = await silentBrowser(pw, "chromium");
 try {
@@ -13,7 +12,6 @@ try {
   });
   await page.goto("http://127.0.0.1:4317");
   await page.waitForSelector("[data-node]");
-  await page.waitForSelector("[data-node]");
   await page.evaluate(() => document.fonts.ready);
   const clip = await page.locator("#flight").evaluate((el) => {
     const r = el.getBoundingClientRect();
@@ -21,7 +19,7 @@ try {
     return { x: r.left, y: r.top, width: r.width, height: last.bottom - r.top };
   });
   const source = await page.screenshot({ clip });
-  await writeFile("shots/plex/social-source.png", source);
+  await writeFile(".cache/browser/plex/social-source.png", source);
   const social = await browser.newPage({
     viewport: { width: 1200, height: 630 },
     deviceScaleFactor: 1,

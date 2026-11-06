@@ -1,0 +1,194 @@
+#flight :where(.trace-graph) {
+  background: none;
+}
+#flight :where(.trace-lane-label) {
+  position: sticky;
+  width: max-content;
+}
+#flight :where(.proof-wire) {
+  margin-top: 32px;
+  padding: 20px;
+  border: 1px solid var(--line);
+  max-width: 530px;
+}
+#flight :where(.proof-wire dl) {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  font-size: 12px;
+  gap: 10px;
+  margin: 18px 0;
+}
+#flight :where(.proof-wire dt) {
+  color: var(--muted);
+}
+#flight :where(.proof-wire dd) {
+  margin: 0;
+  text-align: right;
+}
+#flight :where(.proof-wire p) {
+  font-size: 11px;
+  margin-top: 12px;
+}
+#flight :where(.proof-wire pre) {
+  font: 10px / 1.7 var(--data);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  border-left: 2px solid var(--yellow);
+  padding-left: 12px;
+  margin: 15px 0 22px;
+}
+#flight :where(.byte-window) {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 3px;
+}
+#flight :where(.byte-window span) {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  padding: 7px 0;
+  background: #222b1a;
+}
+#flight :where(.byte-window b) {
+  font: 12px / 1.4 var(--data);
+}
+#flight :where(.byte-window small) {
+  font: 11px / 1.4 var(--data);
+  color: var(--muted);
+  margin-top: 4px;
+}
+#flight :where(.byte-window .changed-byte) {
+  background: var(--yellow);
+  color: #111410;
+}
+#flight :where(.byte-window .changed-byte small) {
+  color: #111410;
+}
+#flight :where(.proof-facts-title) {
+  font-size: 14px;
+  margin: 20px 0 12px;
+}
+.archive-choice {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  font-size: 10px;
+  color: var(--muted);
+}
+.archive-choice select {
+  font: 12px / 1.4 var(--reading);
+  background: #111410;
+  color: #d3dbc9;
+  border: 1px solid var(--line);
+  padding: 6px;
+  max-width: 300px;
+}
+@media (max-width: 760px) {
+  .archive-choice {
+    width: 100%;
+    padding: 8px 0;
+  }
+  .archive-choice select {
+    flex: 1;
+    min-width: 0;
+    max-width: 100%;
+    font-size: 11px;
+  }
+  .is-replay .archive-choice {
+    display: none;
+  }
+  .is-replay .view-switch {
+    margin-bottom: 10px;
+  }
+  .is-replay .view-switch button {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+}
+@media (max-width: 759px) {
+  .is-replay .masthead {
+    height: 49px;
+  }
+  .is-replay .challenge {
+    min-height: 54px;
+    align-items: flex-start;
+    padding-top: 0;
+  }
+  .is-replay .view-switch {
+    height: 25px;
+    margin-top: -25px;
+    margin-bottom: 0;
+  }
+  .is-replay .view-switch button {
+    padding: 3px 12px;
+    height: 25px;
+    font-size: 11px;
+  }
+}
+
+#flight :where(.trace-node) {
+  width: 70px;
+  justify-content: space-between;
+}
+#flight
+  :where(
+    .flight-kicker,
+    .trace-bar strong,
+    .trace-lane-label span,
+    .trace-caption,
+    .trace-call > span,
+    .patch-file > span,
+    .edge-heading,
+    .evidence-pair > div > span,
+    .flight-clock p,
+    .trace-criterion > span,
+    #proof-state > span
+  ) {
+  font-family: var(--display);
+}
+#flight :where(.flight-clock > span) {
+  font-family: var(--data);
+  font-size: 42px;
+  letter-spacing: -1.5px;
+}
+#flight :where(.flight-clock > span > span) {
+  font-family: var(--reading);
+  font-size: 20px;
+  letter-spacing: 0;
+}
+#flight :where(.flight-heading h2) {
+  font-size: 36px;
+}
+#flight :where(.trace-node) {
+  font-family: var(--display);
+  font-size: 10px;
+}
+#flight :where(.trace-node b) {
+  font-family: var(--data);
+  font-size: 10px;
+}
+#flight :where(.trace-lane-label strong) {
+  font-size: 20px;
+}
+#flight :where(.trace-call strong) {
+  font-size: 24px;
+}
+#flight :where(.trace-loading) {
+  min-height: 100dvh;
+}
+@media (max-width: 760px) {
+  #flight :where(.flight-clock > span) {
+    font-size: 30px;
+    letter-spacing: -1.2px;
+  }
+  #flight :where(.flight-clock > span > span) {
+    font-size: 16px;
+  }
+  #flight :where(.flight-heading h2) {
+    font-size: 28px;
+  }
+  #flight :where(.trace-call strong) {
+    font-size: 22px;
+  }
+}

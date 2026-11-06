@@ -1,0 +1,431 @@
+@media (min-width: 1700px) {
+  .masthead {
+    max-width: 1608px;
+    margin: auto;
+  }
+}
+@media (max-width: 1100px) {
+  .challenge-summary {
+    display: none;
+  }
+  .race-surface {
+    grid-template-columns: 245px minmax(0, 1fr);
+  }
+  .tower {
+    padding: 0 14px;
+  }
+  .tower-row {
+    gap: 8px;
+  }
+  .tower-row strong {
+    font-size: 14px;
+  }
+  .tower-row > b {
+    font-size: 16px;
+  }
+  .booth-copy > p {
+    font-size: 24px;
+  }
+  .lower {
+    gap: 28px;
+    grid-template-columns: minmax(0, 1fr) 260px;
+  }
+  .clock output {
+    font-size: 36px;
+    min-width: 112px;
+  }
+  .control {
+    gap: 12px;
+  }
+}
+@media (max-width: 759px) {
+  .masthead {
+    margin: 0 16px;
+    height: 57px;
+    gap: 10px;
+  }
+  .wordmark {
+    gap: 9px;
+  }
+  .wordmark h1 {
+    font-size: 23px;
+  }
+  .brand-mark {
+    width: 18px;
+  }
+  .brand-mark i {
+    height: 4px;
+  }
+  .brand-mark i:nth-child(2) {
+    width: 13px;
+  }
+  .brand-mark i:nth-child(3) {
+    width: 9px;
+  }
+  .record-label {
+    font-size: 8px;
+    letter-spacing: 0.6px;
+  }
+  .record-label #record-date {
+    display: none;
+  }
+  .masthead > button {
+    font-size: 10px;
+    padding: 6px;
+  }
+  main {
+    padding: 0 12px;
+  }
+  .challenge {
+    min-height: 62px;
+    gap: 8px;
+  }
+  .challenge > div {
+    gap: 8px;
+    flex-wrap: wrap;
+    row-gap: 2px;
+  }
+  .challenge-label {
+    font-size: 8px;
+    letter-spacing: 0.7px;
+  }
+  .challenge h2 {
+    font-size: 23px;
+    white-space: normal;
+  }
+  .challenge > button {
+    padding: 4px;
+    font-size: 10px;
+  }
+  .control {
+    grid-template-columns: 1fr auto;
+    min-height: 96px;
+    padding: 10px 12px;
+    gap: 8px 10px;
+  }
+  .session {
+    column-gap: 7px;
+  }
+  .session strong {
+    font-size: 10px;
+    letter-spacing: 0.4px;
+  }
+  .session-detail {
+    font-size: 9px;
+  }
+  .clock {
+    gap: 5px;
+  }
+  .clock output {
+    font-size: 36px;
+    line-height: 0.9;
+    min-width: 100px;
+    letter-spacing: 0.3px;
+  }
+  .clock > span {
+    font-size: 10px;
+  }
+  .playback {
+    grid-column: 1 / -1;
+    justify-content: stretch;
+  }
+  .playback #restart {
+    width: 34px;
+    font-size: 20px;
+  }
+  .playback #play {
+    flex: 1;
+  }
+  .playback button {
+    font-size: 11px;
+    padding: 6px 12px;
+  }
+  .playback select {
+    font-size: 11px;
+    padding: 6px;
+    width: 48px;
+  }
+  .race-surface {
+    display: flex;
+    flex-direction: column;
+  }
+  .tower {
+    padding: 0 12px;
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 14px;
+  }
+  .tower > .panel-heading {
+    grid-column: 1 / -1;
+    min-height: 27px;
+    font-size: 9px;
+  }
+  .tower-row {
+    min-height: 47px;
+    gap: 8px;
+  }
+  .tower-row strong {
+    font-size: 12px;
+  }
+  .tower-row > b {
+    font-size: 13px;
+  }
+  .position {
+    font-size: 20px;
+    width: 9px;
+  }
+  .tower-row > :where(div) > span {
+    font-size: 7px;
+    margin-top: 3px;
+    letter-spacing: 0;
+  }
+  .tower-row.verified:after {
+    left: -6px;
+    height: 25px;
+    width: 2px;
+  }
+  .tower-foot {
+    display: none;
+  }
+  .gap {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 7px 0 8px;
+    margin: 0;
+  }
+  .gap > span {
+    font-size: 8px;
+    letter-spacing: 0.3px;
+  }
+  .gap > strong {
+    font: 600 20px / 1 var(--display);
+    letter-spacing: 0.5px;
+    min-height: 0;
+  }
+  .gap > p {
+    font-size: 8px;
+    margin-left: auto;
+    max-width: 132px;
+    min-height: 0;
+    line-height: 1.3;
+  }
+  .lanes {
+    padding: 0 12px 9px;
+  }
+  .lanes > .panel-heading {
+    min-height: 27px;
+    font-size: 8px;
+    letter-spacing: 0.4px;
+  }
+  :where(.lanes) > .panel-heading > span:where(:last-child) {
+    display: none;
+  }
+  .lane {
+    min-height: 129px;
+    padding-top: 9px;
+  }
+  .lane + .lane {
+    margin-top: 7px;
+  }
+  .lane-head h3 {
+    font-size: 22px;
+  }
+  .lane-head > span {
+    font-size: 8px;
+    letter-spacing: 0.3px;
+  }
+  .splits {
+    margin: 10px 0 6px;
+  }
+  .split {
+    padding-right: 5px;
+  }
+  .split + .split {
+    padding-left: 8px;
+  }
+  .split span {
+    font-size: 8px;
+    letter-spacing: 0.1px;
+    white-space: nowrap;
+  }
+  .split strong {
+    font-size: 24px;
+    letter-spacing: 0.15px;
+    min-height: 27px;
+  }
+  .lane-events {
+    height: 50px;
+  }
+  .event {
+    grid-template-columns: 45px 34px minmax(0, 1fr) 37px;
+    gap: 6px;
+    min-height: 25px;
+    padding: 5px 0;
+    font-size: 9px;
+  }
+  .event-kind,
+  .event-open {
+    font-size: 7px;
+    letter-spacing: 0.2px;
+  }
+  .waiting {
+    font-size: 10px;
+    padding: 6px 0;
+  }
+  .timeline {
+    padding: 10px 12px 3px;
+  }
+  .timeline-labels {
+    font-size: 7px;
+    letter-spacing: 0.5px;
+  }
+  .timeline-track {
+    margin: 2px 0;
+    height: 29px;
+  }
+  .mark.codex {
+    top: 24px;
+    height: 5px;
+  }
+  .mark.claude {
+    top: 4px;
+    height: 5px;
+  }
+  .mark.finish-mark {
+    height: 7px;
+  }
+  .booth {
+    grid-template-columns: 1fr;
+    gap: 8px;
+    padding: 12px;
+    min-height: 139px;
+  }
+  .booth-label {
+    flex-direction: row;
+    min-height: 0;
+    font-size: 9px;
+  }
+  .booth-label > span:where(:last-child) {
+    font-size: 10px;
+  }
+  .booth-copy > p {
+    font-size: 22px;
+    line-height: 1.12;
+    min-height: 75px;
+  }
+  .booth-copy > button {
+    font-size: 7px;
+    letter-spacing: 0.2px;
+    line-height: 1.4;
+    padding-top: 5px;
+  }
+  .photo {
+    gap: 9px;
+    padding-top: 9px;
+    margin-top: 6px;
+    min-height: 91px;
+  }
+  .finish-pattern {
+    width: 24px;
+    height: 24px;
+    background-size: 12px 12px;
+  }
+  .photo span {
+    font-size: 8px;
+    letter-spacing: 0.4px;
+  }
+  .photo strong {
+    font-size: 20px;
+  }
+  .photo p {
+    font-size: 9px;
+  }
+  .photo button {
+    font-size: 9px;
+    padding: 6px;
+  }
+  .inspector {
+    position: relative;
+    inset: auto;
+    width: calc(100% - 16px);
+    height: 310px;
+    margin: 8px;
+    box-shadow: none;
+  }
+  .inspector-head {
+    padding: 7px 9px;
+    gap: 8px;
+  }
+  .inspector-head > strong {
+    font-size: 9px;
+    letter-spacing: 0.1px;
+  }
+  .inspector-head > button {
+    font-size: 10px;
+  }
+  #inspector-body {
+    padding: 12px;
+  }
+  #inspector-body .evidence-paragraphre {
+    font-size: 10px;
+  }
+  .lower {
+    display: block;
+    margin: 28px 0 35px;
+  }
+  .ledger-head h2,
+  .method h2 {
+    font-size: 23px;
+  }
+  .ledger-head h2 > span {
+    font-size: 10px;
+    margin-left: 5px;
+  }
+  .ledger-head {
+    gap: 8px;
+  }
+  .ledger-head button {
+    font-size: 10px;
+    padding: 5px 7px;
+  }
+  .ledger .event {
+    font-size: 10px;
+    grid-template-columns: 45px 34px minmax(0, 1fr) 37px;
+    gap: 6px;
+    min-height: 38px;
+  }
+  .method {
+    margin-top: 34px;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+  }
+  .method > p {
+    font-size: 12px;
+  }
+  .empty-ledger {
+    font-size: 11px;
+  }
+  footer {
+    padding: 20px 16px;
+    font-size: 8px;
+    line-height: 1.5;
+  }
+  footer > span:last-child {
+    max-width: 130px;
+    text-align: right;
+  }
+  #dialog-body {
+    padding: 18px;
+    font-size: 13px;
+  }
+  #dialog-body h2 {
+    font-size: 30px;
+  }
+  .dialog-head {
+    padding: 10px 14px;
+  }
+}

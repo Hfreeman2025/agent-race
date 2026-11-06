@@ -1,11 +1,9 @@
 import assert from "node:assert/strict";
 import { mkdir, writeFile } from "node:fs/promises";
-import { createRequire } from "node:module";
+import * as pw from "playwright";
 import { silentBrowser } from "./silent.mjs";
 
-const require = createRequire("<local path>");
-const pw = require("playwright");
-const root = "shots/v3/fallbacks";
+const root = ".cache/browser/v3/fallbacks";
 await mkdir(root, { recursive: true });
 const report = { checks: [], failures: [], console: [], versions: {} };
 const check = (name, good) => (good ? report.checks : report.failures).push(name);

@@ -1,0 +1,157 @@
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation: none;
+    scroll-behavior: auto;
+    transition: none;
+  }
+}
+[hidden][hidden] {
+  display: none;
+}
+/* Finish occupies the event window: it never pushes the clock or commentary. */
+.photo {
+  position: absolute;
+  bottom: 16px;
+  left: 20px;
+  right: 20px;
+  margin: 0;
+  min-height: 64px;
+  height: 64px;
+  background: #191e16;
+  padding-top: 8px;
+}
+.control {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  background: #191e16;
+}
+#inspector-body .diff {
+  line-height: 1.5;
+}
+.booth {
+  height: 128px;
+}
+@media (max-width: 759px) {
+  .masthead {
+    height: 53px;
+  }
+  .challenge {
+    min-height: 58px;
+  }
+  .lane-events {
+    height: 42px;
+  }
+  .lane {
+    min-height: 121px;
+  }
+  .photo {
+    bottom: 9px;
+    left: 12px;
+    right: 12px;
+    min-height: 46px;
+    height: 46px;
+    gap: 7px;
+    padding-top: 5px;
+  }
+  .photo strong {
+    font-size: 17px;
+    line-height: 1.05;
+    margin-top: 2px;
+  }
+  .photo p {
+    display: none;
+  }
+  .photo span {
+    font-size: 8px;
+  }
+  .photo .finish-pattern {
+    width: 18px;
+    height: 18px;
+    background-size: 9px 9px;
+  }
+  .booth {
+    height: 148px;
+    min-height: 148px;
+    padding: 10px 12px;
+    gap: 7px;
+  }
+  .booth-copy > p {
+    font-size: 23px;
+    line-height: 1.08;
+    letter-spacing: 0.1px;
+    min-height: 78px;
+  }
+  .booth-copy > button {
+    font-size: 9px;
+    line-height: 1.25;
+    letter-spacing: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .photo {
+    animation: none;
+  }
+}
+.playback #play:disabled {
+  background: #30392a;
+  color: var(--muted);
+  border-color: var(--line);
+}
+.timeline input:disabled {
+  cursor: default;
+}
+
+.photo-note {
+  display: none;
+}
+#scrubber:focus {
+  outline: 3px solid var(--yellow);
+  outline-offset: 4px;
+}
+@media (max-width: 759px) {
+  .inspector {
+    scroll-margin-top: 110px;
+  }
+  .challenge {
+    min-height: 50px;
+  }
+  .control {
+    min-height: 92px;
+  }
+  .lane-events {
+    height: 50px;
+  }
+  .timeline {
+    padding-top: 6px;
+  }
+  .split span {
+    font-size: 9px;
+  }
+  .lane-head > span {
+    font-size: 9px;
+  }
+  .tower-row > :where(div) > span {
+    font-size: 8px;
+  }
+}
+@media (max-width: 359px) {
+  .tower-row {
+    gap: 6px;
+  }
+  .tower-row strong,
+  .tower-row > b {
+    font-size: 11px;
+  }
+}
+dialog.archive-dialog {
+  height: 85dvh;
+}
+
+.split strong,
+.gap > strong {
+  font-variant-numeric: tabular-nums;
+}

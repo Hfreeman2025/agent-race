@@ -1,0 +1,134 @@
+@media (max-width: 760px) {
+  .view-switch {
+    margin-bottom: 18px;
+    flex-wrap: wrap;
+  }
+  .view-switch button {
+    padding: 11px 13px;
+    font-size: 14px;
+  }
+  .view-switch > span {
+    width: 100%;
+    margin: 0;
+    padding: 9px 0;
+    font-size: 9px;
+  }
+  #flight :where(.flight-heading) {
+    align-items: start;
+    padding-bottom: 18px;
+  }
+  #flight :where(.flight-heading h2) {
+    font-size: 32px;
+    max-width: 210px;
+  }
+  #flight :where(.flight-kicker) {
+    font-size: 10px;
+  }
+  #flight :where(.flight-kicker span) {
+    display: block;
+    margin-top: 4px;
+  }
+  #flight :where(.flight-clock > span) {
+    font-size: 40px;
+  }
+  #flight :where(.flight-clock p) {
+    font-size: 8px;
+    width: 100px;
+    line-height: 1.5;
+  }
+  #flight :where(.trace-bar) {
+    align-items: start;
+    padding: 10px;
+  }
+  #flight :where(.trace-bar p) {
+    display: block;
+    font-size: 10px;
+    line-height: 1.6;
+  }
+  #flight :where(.trace-bar p > span) {
+    display: block;
+    max-width: 210px;
+  }
+  #flight :where(.trace-bar strong) {
+    font-size: 10px;
+  }
+  #flight :where(.trace-bar button) {
+    font-size: 10px;
+    max-width: 96px;
+    white-space: normal;
+    padding: 5px 7px;
+  }
+  #flight :where(.trace-graph) {
+    min-width: 650px;
+  }
+  #flight :where(.trace-caption) {
+    gap: 8px;
+    font-size: 9px;
+    flex-wrap: wrap;
+    padding-bottom: 10px;
+  }
+  #flight :where(.trace-caption span:last-child) {
+    width: 100%;
+    margin: 0;
+  }
+  #flight :where(.trace-call) {
+    flex-wrap: wrap;
+    gap: 6px 12px;
+    padding: 12px;
+  }
+  #flight :where(.trace-call > span) {
+    font-size: 9px;
+  }
+  #flight :where(.trace-call strong) {
+    font-size: 25px;
+  }
+  #flight :where(.trace-call p) {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  #flight :where(.trace-call button) {
+    margin: 5px 0 0;
+    font-size: 11px;
+    padding: 6px 9px;
+  }
+  #flight :where(.trace-workbench) {
+    grid-template-columns: 1fr;
+  }
+  #flight :where(.final-patch) {
+    border-right: 0;
+    border-bottom: 1px solid var(--line);
+  }
+  #flight :where(.patch-heading) {
+    padding: 12px;
+    min-height: 58px;
+  }
+  #flight :where(.patch-heading h3) {
+    font-size: 23px;
+  }
+  #flight :where(.final-lines) {
+    max-height: 285px;
+  }
+  #flight :where(.patch-line) {
+    padding-left: 6px;
+    gap: 8px;
+  }
+  #flight :where(.patch-line code) {
+    font-size: 10px;
+  }
+  #flight :where(#flow-evidence) {
+    max-height: 400px;
+  }
+  #flight :where(.flight-proof) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+    padding: 24px 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  #flight :where(#trace-edges path) {
+    transition: none;
+  }
+  #flight :where(#trace-edges path.lit) {
+    animation: none;
+  }
+}

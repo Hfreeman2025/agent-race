@@ -22,15 +22,16 @@ describe("strict event contract", () => {
 });
 describe("fail-closed privacy scrub", () => {
   for (const [name, value] of [
-    ["company", ["Simply", "Sustainable"].join(" ")],
-    ["company alias", ["simply", "carbon"].join("-")],
+    ["company", ["Example", "Organisation"].join(" ")],
+    ["company alias", ["example", "organisation"].join("-")],
     ["email", "person@example.test"],
     ["home", "/Users/someone/file"],
     ["secret", "sk-ant-abcdefghijklmnopqrstuvxyz123456"],
     ["assignment", "api_key=abcdefghijklmnop123456"],
     ["private key", "-----BEGIN PRIVATE KEY-----"],
   ])
-    it(`rejects ${name}`, () => expect(scrub(value ?? "").findings.length).toBeGreaterThan(0));
+    it(`rejects ${name}`, () =>
+      expect(scrub(value ?? "", {}, ["Example Organisation"]).findings.length).toBeGreaterThan(0));
   it("normalises only explicitly known repository paths first", () =>
     expect(scrub("/private/tmp/race/repo/src.mjs", { "/private/tmp/race/repo": "<repo>" })).toEqual(
       { text: "<repo>/src.mjs", pathsRedacted: 1, findings: [] },

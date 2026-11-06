@@ -2,6 +2,7 @@
 export function scrub(
   text: string,
   paths: Record<string, string> = {},
+  privateTerms: readonly string[] = [],
 ): { text: string; pathsRedacted: number; findings: string[] } {
   let clean = text;
   let pathsRedacted = 0;
@@ -23,8 +24,23 @@ export function scrub(
     if (decoded === readable) break;
     readable = decoded;
   }
+  // A public checkout must not embed its operator's private organisation names.
+  // Terms are literal words; separators tolerate common stream/JSON representations.
+  const termRules: [string, RegExp][] = privateTerms
+    .map((term) => term.trim())
+    .filter(Boolean)
+    .map((term) => [
+      "private term",
+      new RegExp(
+        term
+          .split(/[\s_-]+/u)
+          .map((word) => word.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&"))
+          .join("[\\s_-]+"),
+        "iu",
+      ),
+    ]);
   const rules: [string, RegExp][] = [
-    ["company name", /simply(?:[\s_-]*sustainable|-carbon)/iu],
+    ...termRules,
     ["email address", /[A-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[A-Z0-9.-]+\.[A-Z]{2,}/iu],
     ["home directory", /(?:\/Users\/|\\\\Users\\|\/home\/)/iu],
     [

@@ -1,17 +1,18 @@
 import assert from "node:assert/strict";
 import { execFileSync } from "node:child_process";
 import { mkdir, writeFile } from "node:fs/promises";
-import { createRequire } from "node:module";
+import { loadavg } from "node:os";
+import * as pw from "playwright";
 import { silentBrowser } from "./silent.mjs";
 
-const require = createRequire("<local path>");
-const pw = require("playwright");
 const rows = [];
 const messages = [];
 const host = () =>
-  execFileSync("top", ["-l", "1", "-n", "0"], { encoding: "utf8" })
-    .split("\n")
-    .filter((x) => /^CPU usage:|^Load Avg:/u.test(x));
+  process.platform !== "darwin"
+    ? [`Load averages: ${loadavg().join(", ")}; CPU idle not measured`]
+    : execFileSync("top", ["-l", "1", "-n", "0"], { encoding: "utf8" })
+        .split("\n")
+        .filter((x) => /^CPU usage:|^Load Avg:/u.test(x));
 const before = host();
 for (const engine of ["chromium", "webkit", "firefox"]) {
   const browser = await silentBrowser(pw, engine);
@@ -52,9 +53,9 @@ for (const engine of ["chromium", "webkit", "firefox"]) {
   }
 }
 const after = host();
-await mkdir("shots/v3/cold", { recursive: true });
+await mkdir(".cache/browser/v3/cold", { recursive: true });
 await writeFile(
-  "shots/v3/cold/report.json",
+  ".cache/browser/v3/cold/report.json",
   JSON.stringify(
     {
       method:

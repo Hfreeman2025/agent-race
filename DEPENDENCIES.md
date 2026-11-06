@@ -1,14 +1,14 @@
 # Dependencies and distributed assets
 
-Application code is MIT, copyright 2026 Harry Freeman. The 130 locked npm packages retain their licences; `npm run licenses` checks the MIT / Apache-2.0 / BSD / ISC allowlist and generates [the full inventory](docs/dependency-licenses.md).
+Application code is MIT, copyright 2026 Harry Freeman. The locked npm packages retain their licences; `npm run licenses` checks the MIT / Apache-2.0 / BSD / ISC allowlist and generates [the full inventory](docs/dependency-licenses.md).
 
 ## IBM Plex — shared type family
 
-Self-hosted Latin WOFF2 assets from **@fontsource 5.3.0**, unmodified, licensed **SIL OFL-1.1** (approved by Harry). IBM Plex Sans reads and handles the interface (400, 400 italic, 500, 600); IBM Plex Mono records timings and code (400, 600); IBM Plex Sans Condensed signs the wordmark, headings and labels (500, 600). Sans labels remain Sans/Condensed; uppercase mono micro-labels are not used.
+Self-hosted Latin WOFF2 assets from **@fontsource 5.3.0**, unmodified, licensed **SIL OFL-1.1**. IBM Plex Sans reads and handles the interface (400, 400 italic, 500, 600); IBM Plex Mono records timings and code (400, 600); IBM Plex Sans Condensed signs the wordmark, headings and labels (500, 600). Sans labels remain Sans/Condensed; uppercase mono micro-labels are not used.
 
 The eight font files total **165,476 bytes**. Each family's full distribution-supplied OFL notice is beside the fonts, preserving IBM's attribution. `public/fonts/plex.css` uses `font-display: swap`; the document preloads Sans 400, Mono 600 and Sans Condensed 600 with matching anonymous CORS mode. Everything loads from the same origin; no Google Fonts or CDN request occurs at runtime.
 
-`public/fonts/plex-manifest.json` records package version, source URL, exact size and SHA-256. `npm run licenses` checks every pinned asset against it. The font remains OFL licensed; application code remains MIT. No Fontsource runtime package was added. The former Big Shoulders asset is retired; historical screenshots remain unchanged.
+`public/fonts/plex-manifest.json` records package version, source URL, exact size and SHA-256. `npm run licenses` checks every pinned asset against it. The font remains OFL licensed; application code remains MIT. No Fontsource runtime package was added. The former Big Shoulders asset is retired.
 
 | Asset | Bytes | SHA-256 | Pinned @fontsource 5.3.0 source |
 | --- | ---: | --- | --- |
@@ -29,3 +29,7 @@ The eight font files total **165,476 bytes**. Each family's full distribution-su
 No new runtime packages, model weights or hosted APIs were added. The evidence DAG, backward traversal, patch provenance and browser DSSE verifier are original MIT code. WebCrypto, SHA-256, Ed25519, TextEncoder/TextDecoder and SVG are browser facilities. The existing BSD-3-Clause `diff@9.0.0` applies/reconstructs patches. The local MIT receipts CLI produces the bundled signed imports; its implementation is not copied into this project. Public envelopes, null-field import records and the public trust anchor are project-generated data; private keys are ignored and never distributed.
 
 Protocol references: [DSSE v1.0.2](https://github.com/secure-systems-lab/dsse/blob/master/protocol.md), [in-toto Statement v1](https://github.com/in-toto/attestation/blob/main/spec/v1/statement.md), [Ed25519 / RFC 8032](https://www.rfc-editor.org/rfc/rfc8032).
+
+## Browser checks
+
+Development-only `playwright@1.63.0` and `playwright-core@1.63.0` are Apache-2.0. Engines are installed separately into ignored `.cache/ms-playwright/`; they are not distributed with this repository or the viewer. The version is pinned to avoid the newer WebKit native-select CSP regression described in [development](docs/development.md).
